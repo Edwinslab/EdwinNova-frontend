@@ -251,7 +251,7 @@ export default function About() {
   /* ── Scroll-driven parallax ── */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start end", "end end"],
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
