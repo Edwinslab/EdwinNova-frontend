@@ -1,5 +1,95 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap");
 
-.font-orbitron {
-  font-family: 'Orbitron', sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green: #9be931;
+  --dark: #0b0f1a;
+  --light: #e6edf3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 233, 49, 0.3) #0b0f1a;
+}
+
+body {
+  background: #0b0f1a;
+  color: #e6edf3;
+  font-family: "DM Sans", sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f1a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 233, 49, 0.3);
+  border-radius: 10px;
+}
+
+.cursor {
+  width: 10px;
+  height: 10px;
+  background: #9be931;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.2s,
+    height 0.2s;
+}
+
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(155, 233, 49, 0.6);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease-out;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(155, 233, 49, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155, 233, 49, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #9be931 0%, #d4f56e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-green {
+  box-shadow:
+    0 0 30px rgba(155, 233, 49, 0.3),
+    0 0 60px rgba(155, 233, 49, 0.1);
+}
+
+.card-border {
+  border: 1px solid rgba(155, 233, 49, 0.12);
+}
+
+.card-border-hover:hover {
+  border-color: rgba(155, 233, 49, 0.4) !important;
 }

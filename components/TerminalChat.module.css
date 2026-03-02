@@ -1,0 +1,405 @@
+/* ═══════════════════════════════════════════════════════
+   TERMINAL CHATBOT — AntiGravity AI
+   Colors: --green: #9be931, --dark: #0b0f1a, --light: #e6edf3
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Floating Toggle Button ── */
+.chatToggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  border: 1px solid rgba(155, 233, 49, 0.4);
+  background: #0b0f1a;
+  color: #9be931;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px rgba(155, 233, 49, 0.1), 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  padding: 0;
+  outline: none;
+  overflow: hidden;
+}
+.chatToggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(155, 233, 49, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.chatToggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 28px rgba(155, 233, 49, 0.2), 0 8px 32px rgba(0, 0, 0, 0.6);
+  border-color: rgba(155, 233, 49, 0.7);
+}
+.chatToggle.active {
+  border-radius: 50%;
+  background: #ff3333;
+  border-color: #ff3333;
+  color: #fff;
+  width: 56px;
+  height: 56px;
+}
+.chatToggle.active::before {
+  display: none;
+}
+
+/* Toggle icon transitions */
+.iconTerminal,
+.iconClose {
+  position: absolute;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.iconTerminal {
+  line-height: 0;
+}
+.iconClose {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+  font-size: 1.4rem;
+}
+.chatToggle.active .iconTerminal {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.3);
+}
+.chatToggle.active .iconClose {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* ── Notification Badge ── */
+.notifBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  background: #ff3333;
+  border-radius: 50%;
+  border: 2px solid #0b0f1a;
+  display: none;
+  animation: badgePop 0.3s ease;
+}
+.notifBadge.show {
+  display: block;
+}
+@keyframes badgePop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* ── Chat Window ── */
+.chatWindow {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  z-index: 9998;
+  width: 420px;
+  max-width: calc(100vw - 48px);
+  height: 540px;
+  max-height: calc(100vh - 130px);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #1a2233;
+  background: #0b0f1a;
+  box-shadow: 0 0 18px rgba(155, 233, 49, 0.06), 0 20px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+.chatWindow.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* Scanline overlay */
+.chatWindow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Title Bar ── */
+.termHeader {
+  background: #0e1320;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #1a2233;
+  user-select: none;
+  flex-shrink: 0;
+}
+.termDots {
+  display: flex;
+  gap: 6px;
+}
+.dotRed,
+.dotYellow,
+.dotGreen {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: block;
+}
+.dotRed { background: #ff5f56; }
+.dotYellow { background: #ffbd2e; }
+.dotGreen { background: #27c93f; }
+
+.termTitle {
+  flex: 1;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #8b95a5;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.highlight {
+  color: #9be931;
+}
+
+/* ── System Info Bar ── */
+.sysInfo {
+  background: rgba(155, 233, 49, 0.03);
+  border-bottom: 1px solid #1a2233;
+  padding: 6px 14px;
+  font-size: 0.6rem;
+  color: #8b95a5;
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+.statusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9be931;
+  margin-right: 6px;
+  animation: pulseDot 2s ease-in-out infinite;
+  vertical-align: middle;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px #9be931; }
+  50% { opacity: 0.4; box-shadow: none; }
+}
+
+/* ── Messages Area ── */
+.termBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #2d3a4a transparent;
+}
+.termBody::-webkit-scrollbar { width: 5px; }
+.termBody::-webkit-scrollbar-track { background: transparent; }
+.termBody::-webkit-scrollbar-thumb { background: #2d3a4a; border-radius: 3px; }
+
+/* ── Message Lines ── */
+.msgLine {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  animation: fadeIn 0.3s ease;
+  word-break: break-word;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* System messages */
+.msgSystem {
+  color: #8b95a5;
+  opacity: 0.6;
+  font-size: 0.7rem;
+}
+.sysArrow {
+  color: #c8a832;
+}
+
+/* ASCII art */
+.asciiArt {
+  color: #9be931;
+  opacity: 0.8;
+  white-space: pre;
+  font-size: 0.55rem;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+
+/* Divider */
+.msgDivider {
+  color: #1a2233;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  opacity: 0.5;
+}
+
+/* User messages */
+.msgUser {
+  composes: msgLine;
+}
+.promptSymbol {
+  color: #9be931;
+  font-weight: 700;
+}
+.promptPath {
+  color: #6fc1ff;
+}
+.promptText {
+  color: #e6edf3;
+}
+
+/* Bot messages */
+.msgBot {
+  composes: msgLine;
+  color: #8b95a5;
+  padding-left: 4px;
+}
+.botPrefix {
+  color: #9be931;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.5px;
+}
+.botText {
+  color: #e6edf3;
+  display: block;
+  padding-left: 2px;
+  margin-top: 2px;
+}
+
+/* Typing */
+.cursorBlink {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: #9be931;
+  animation: blinkCursor 0.8s step-end infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Error */
+.msgError {
+  composes: msgLine;
+  color: #ff3333;
+}
+.errPrefix {
+  font-weight: 700;
+}
+
+/* ── Input Area ── */
+.termInputArea {
+  border-top: 1px solid #1a2233;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0e1320;
+  flex-shrink: 0;
+}
+.inputPrompt {
+  color: #9be931;
+  font-weight: 700;
+  font-size: 0.82rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  user-select: none;
+  white-space: nowrap;
+}
+.inputPath {
+  color: #6fc1ff;
+  font-weight: 400;
+}
+.userInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e6edf3;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.82rem;
+  caret-color: #9be931;
+  letter-spacing: 0.3px;
+}
+.userInput::placeholder {
+  color: rgba(230, 237, 243, 0.2);
+}
+
+.sendBtn {
+  background: transparent;
+  border: 1px solid #1a2233;
+  color: #9be931;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+  outline: none;
+}
+.sendBtn:hover {
+  background: rgba(155, 233, 49, 0.08);
+  border-color: rgba(155, 233, 49, 0.4);
+}
+.sendBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.sendBtn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .chatWindow {
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  .chatToggle {
+    bottom: 16px;
+    right: 16px;
+  }
+}
