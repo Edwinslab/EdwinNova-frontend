@@ -586,6 +586,8 @@ export default function ApplyForm() {
 
       clearTimeout(timeout);
 
+      //lorem
+
       let data: any = null;
       try { data = await response.json(); } catch { data = null; }
 
