@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIDEHACK — Coastal Innovation Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #003049;
+    --wave: #0077B6;
+    --foam: #00B4D8;
+    --sand: #F4A261;
+    --coral: #E63946;
+    --white: #F8F9FA;
+    --dark: #020C14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, #0077B620 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 20%, #00B4D815 0%, transparent 60%),
+      linear-gradient(180deg, #020C14 0%, #003049 60%, #020C14 100%);
+    z-index: 0;
+  }
+
+  .wave-lines {
+    position: absolute; inset: 0; z-index: 0;
+    opacity: 0.07;
+    background-image:
+      repeating-linear-gradient(
+        -10deg,
+        transparent,
+        transparent 40px,
+        var(--foam) 40px,
+        var(--foam) 41px
+      );
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--foam);
+    text-transform: uppercase;
+    border: 1px solid var(--foam);
+    padding: 0.4rem 1.2rem;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 16vw, 13rem);
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
+
+  .hero-title span.accent { color: var(--foam); }
+  .hero-title span.coral  { color: var(--coral); }
+
+  .hero-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-top: 1.5rem;
+    position: relative; z-index: 1;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+
+  .hero-desc {
+    max-width: 680px;
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    line-height: 1.7;
+    color: #a8c8d8;
+    margin: 2rem auto 0;
+    position: relative; z-index: 1;
+    animation: fadeUp 1s ease 0.35s both;
+  }
+
+  .cta-row {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 3rem;
+    position: relative; z-index: 1;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+
+  .btn-primary {
+    background: var(--coral);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    padding: 1rem 2.5rem;
+    border: none; cursor: pointer;
+    text-transform: uppercase;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: #ff5a65; transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--foam);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    padding: 1rem 2.5rem;
+    border: 1.5px solid var(--foam);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { background: var(--foam); color: var(--dark); }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    color: #4a7a99; z-index: 1;
+    animation: pulse 2s ease infinite;
+  }
+
+  /* ── STAT BAR ── */
+  .stat-bar {
+    display: flex; flex-wrap: wrap;
+    border-top: 1px solid #0d2d42;
+    border-bottom: 1px solid #0d2d42;
+  }
+  .stat {
+    flex: 1; min-width: 150px;
+    padding: 2rem;
+    text-align: center;
+    border-right: 1px solid #0d2d42;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--foam);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: #4a7a99;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+
+  /* ── SECTION COMMONS ── */
+  section { padding: 6rem 2rem; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--foam);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    margin-bottom: 2rem;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .problem {
+    background: #040f18;
+    position: relative;
+    overflow: hidden;
+  }
+  .problem-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .problem-text p {
+    font-size: 1.1rem; line-height: 1.8; color: #a8c8d8; margin-bottom: 1.2rem;
+  }
+  .problem-text p strong { color: var(--white); }
+
+  .problem-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .pcard {
+    background: #0a2030;
+    border: 1px solid #0d3d5a;
+    border-left: 3px solid var(--coral);
+    padding: 1.2rem;
+    border-radius: 2px;
+  }
+  .pcard-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .pcard-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.1em;
+    color: var(--coral); text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .pcard-text { font-size: 0.85rem; color: #7aabb8; line-height: 1.5; }
+
+  /* ── DOMAIN SECTION ── */
+  .domain {
+    background: var(--dark);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .domain-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .dcard {
+    background: linear-gradient(135deg, #0a2030 0%, #071820 100%);
+    border: 1px solid #0d3d5a;
+    border-top: 3px solid var(--foam);
+    padding: 2rem;
+    border-radius: 2px;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .dcard:hover { transform: translateY(-4px); border-top-color: var(--coral); }
+  .dcard::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--foam), var(--coral));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .dcard:hover::after { opacity: 1; }
+  .dcard-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+  .dcard-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; color: var(--white);
+    letter-spacing: 0.05em; margin-bottom: 0.6rem;
+  }
+  .dcard-text { font-size: 0.9rem; color: #7aabb8; line-height: 1.6; }
+  .dcard-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.15em;
+    color: var(--sand); border: 1px solid #3a5a6a;
+    padding: 0.2rem 0.6rem; margin-top: 1rem;
+    text-transform: uppercase;
+  }
+
+  /* ── SOCIAL SECTION ── */
+  .social-section {
+    background: #040f18;
+    border-top: 1px solid #0d2d42;
+  }
+  .social-inner { max-width: 900px; margin: 0 auto; }
+  .social-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+
+  .social-card {
+    background: #0a2030;
+    border: 1px solid #0d3d5a;
+    border-radius: 4px;
+    padding: 2rem;
+    position: relative;
+  }
+  .social-platform {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    color: var(--foam); text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .social-platform::before {
+    content: ''; display: inline-block;
+    width: 20px; height: 2px; background: var(--foam);
+  }
+  .social-copy {
+    font-size: 0.95rem; line-height: 1.75; color: #c8dde8;
+    font-family: 'Syne', sans-serif;
+  }
+  .social-copy .highlight { color: var(--sand); font-weight: 700; }
+  .social-copy .tag { color: var(--foam); }
+
+  .copy-btn {
+    margin-top: 1.5rem;
+    background: transparent;
+    border: 1px solid #1a4060;
+    color: #4a8aaa;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    padding: 0.5rem 1rem;
+    cursor: pointer; text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { border-color: var(--foam); color: var(--foam); }
+  .copy-btn.copied { border-color: #2ecc71; color: #2ecc71; }
+
+  /* ── BROCHURE SECTION ── */
+  .brochure-section {
+    background: var(--dark);
+    border-top: 1px solid #0d2d42;
+  }
+  .brochure-inner { max-width: 900px; margin: 0 auto; }
+
+  .brochure-box {
+    background: linear-gradient(135deg, #0a2030 0%, #071820 100%);
+    border: 1px solid #0d3d5a;
+    border-radius: 4px;
+    padding: 3rem;
+    margin-top: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .brochure-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--wave), var(--foam), var(--coral));
+  }
+  .brochure-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 0.1em;
+    color: var(--foam); margin-bottom: 1.5rem;
+  }
+  .brochure-body {
+    font-size: 1rem; line-height: 1.9; color: #b8d0de;
+  }
+  .brochure-body p { margin-bottom: 1.2rem; }
+  .brochure-body strong { color: var(--white); }
+  .brochure-body em { color: var(--sand); font-style: normal; font-weight: 700; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #020c14;
+    border-top: 1px solid #0d2d42;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  footer .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; color: var(--foam);
+    letter-spacing: 0.1em;
+  }
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: #2a5a6a; margin-top: 0.5rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+  }
+
+  @media (max-width: 768px) {
+    .problem-inner { grid-template-columns: 1fr; }
+    .problem-cards { grid-template-columns: 1fr; }
+    .social-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="wave-lines"></div>
+
+  <div class="hero-tag">🌊 Hackathon Domain Launch 2025</div>
+
+  <h1 class="hero-title">
+    TIDE<span class="accent">HACK</span><br>
+    <span class="coral">∞</span>
+  </h1>
+
+  <div class="hero-sub">Build for the Ocean. Build for the People.</div>
+
+  <p class="hero-desc">
+    India has <strong>7,500 km of coastline</strong> and <strong>4 million fishermen</strong>
+    whose lives hang on the weather, the market, and sheer luck.
+    It's time technology sailed with them — not past them.
+    This is your challenge. This is <strong>TideHack</strong>.
+  </p>
+
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div class="stat-bar">
+  <div class="stat">
+    <div class="stat-num">4M+</div>
+    <div class="stat-label">Fishermen in India</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">7500</div>
+    <div class="stat-label">KM of Coastline</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">$7B</div>
+    <div class="stat-label">Seafood Exports Annually</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Real-time Safety Nets</div>
+  </div>
+</div>
+
+<!-- ══════════════ PROBLEM ══════════════ -->
+<section class="problem">
+  <div class="problem-inner">
+    <div class="problem-text">
+      <div class="section-label">// The Problem</div>
+      <h2 class="section-title">The Sea Doesn't<br>Wait for Anyone.</h2>
+      <p>Every morning, thousands of fishermen along India's coast set sail into the unknown — with <strong>no real-time weather alerts</strong>, no fair price for their catch, and no safety net if something goes wrong.</p>
+      <p>They are the backbone of a <strong>₹2.5 lakh crore industry</strong> — yet they remain the most digitally invisible community in the country.</p>
+      <p><strong>That's where you come in.</strong> As a student builder, you have the tools, the creativity, and now — the challenge — to change this.</p>
+    </div>
+    <div class="problem-cards">
+      <div class="pcard">
+        <div class="pcard-icon">⛈️</div>
+        <div class="pcard-title">No Weather Alerts</div>
+        <div class="pcard-text">Fishermen rely on word-of-mouth for sea conditions. Lives are lost every monsoon season.</div>
+      </div>
+      <div class="pcard">
+        <div class="pcard-icon">💸</div>
+        <div class="pcard-title">Unfair Pricing</div>
+        <div class="pcard-text">Middlemen control fish auction prices. Fishermen earn a fraction of the true market value.</div>
+      </div>
+      <div class="pcard">
+        <div class="pcard-icon">🆘</div>
+        <div class="pcard-title">No SOS Systems</div>
+        <div class="pcard-text">Vessels in distress have no reliable digital rescue coordination system in place.</div>
+      </div>
+      <div class="pcard">
+        <div class="pcard-icon">🏦</div>
+        <div class="pcard-title">Zero Credit Access</div>
+        <div class="pcard-text">Fishermen can't access formal loans or insurance, leaving them in perpetual debt cycles.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DOMAIN ══════════════ -->
+<section style="padding: 6rem 2rem; background: var(--dark);">
+  <div class="domain" style="max-width:1100px; margin: 0 auto;">
+    <div class="section-label">// The Mission</div>
+    <h2 class="section-title">One Coast.<br><span style="color:var(--foam)">Infinite Solutions.</span></h2>
+
+    <div class="domain-single-track">
+      <div class="dcard" style="max-width: 100%; text-align: left; padding: 3rem;">
+        <div class="dcard-icon">🌊</div>
+        <div class="dcard-title">Integrated Coastal Innovation</div>
+        <div class="dcard-text" style="line-height: 1.8; font-size: 1.1rem; opacity: 0.9;">
+          This challenge focuses on transforming the maritime ecosystem through a multi-dimensional approach. We are looking for <strong>Disaster Tech</strong> solutions like real-time cyclone alerts and <strong>IoT-based safety</strong> systems for GPS vessel tracking to protect lives at sea. To empower local economies, we encourage the development of <strong>FinTech</strong> platforms for transparent fish price discovery and <strong>Financial Inclusion</strong> tools that provide micro-loans and parametric insurance to coastal communities. Furthermore, we aim to bridge the digital divide using <strong>Conversational AI</strong> in vernacular languages like Kannada and Tamil. Beyond these tracks, we welcome <strong>Open Innovation</strong> in the broader Blue Economy—including aquaculture, marine biodiversity, and sustainable coastal tourism.
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="dcard-tag">Safety & IoT</span>
+          <span class="dcard-tag">FinTech</span>
+          <span class="dcard-tag">Vernacular AI</span>
+          <span class="dcard-tag">Blue Economy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="logo">TIDEHACK</div>
+  <p>Build for the Ocean. Build for the People. Build for Bharat.</p>
+  <p style="margin-top:1rem;">Blue Economy · FisherTech · AI · IoT · FinTech · Coastal Karnataka</p>
+</footer>
+
+<script>
+  function copyText(id, btn) {
+    const el = document.getElementById(id);
+    const text = el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy Text';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

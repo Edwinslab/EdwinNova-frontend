@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useLenis } from "lenis/react";
+import Link from "next/link";
 
 const links = [
   { label: "Home", href: "#hero" },
@@ -18,12 +19,25 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const lenis = useLenis();
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    if (lenis) {
-      lenis.scrollTo(href);
-    }
-  };
+  // const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  //   e.preventDefault();
+  //   if (lenis) {
+  //     lenis.scrollTo(href);
+  //   }
+  // };
+
+
+  const handleNavClick = (
+  e: React.MouseEvent<HTMLAnchorElement>,
+  href: string
+) => {
+  if (!href.startsWith("#")) return; 
+
+  e.preventDefault();
+  if (lenis) {
+    lenis.scrollTo(href);
+  }
+};
 
   useEffect(() => {
     const onScroll = () => {
@@ -107,9 +121,9 @@ export default function Navbar() {
 
       {/* CTA */}
       <div className="hidden md:block">
-        <a
-          href="#apply"
-          onClick={(e) => handleNavClick(e, "#apply")}
+        {/* <a
+          href="/apply"
+          onClick={(e) => handleNavClick(e, "/apply")}
           className="font-mono font-bold text-xs tracking-widest px-6 py-2.5 rounded-sm transition-all duration-300 no-underline"
           style={{
             background: "#9BE931",
@@ -124,7 +138,25 @@ export default function Navbar() {
           }
         >
           APPLY NOW
-        </a>
+        </a> */}
+
+        <Link
+  href="/apply"
+  className="font-mono font-bold text-xs tracking-widest px-6 py-2.5 rounded-sm transition-all duration-300 no-underline"
+  style={{
+    background: "#9BE931",
+    color: "#0B0F1A",
+  }}
+  onMouseEnter={(e) =>
+    (e.currentTarget.style.boxShadow =
+      "0 0 24px rgba(155,233,49,0.5)")
+  }
+  onMouseLeave={(e) =>
+    (e.currentTarget.style.boxShadow = "none")
+  }
+>
+  APPLY NOW
+</Link>
       </div>
 
       {/* Mobile menu toggle */}
@@ -173,7 +205,7 @@ export default function Navbar() {
                 {l.label}
               </motion.a>
             ))}
-            <motion.a
+            {/* <motion.a
               href="#apply"
               className="font-mono font-bold text-xs tracking-widest px-6 py-3 rounded-sm text-center no-underline"
               style={{ background: "#9BE931", color: "#0B0F1A" }}
@@ -186,7 +218,16 @@ export default function Navbar() {
               transition={{ delay: 0.25 }}
             >
               APPLY NOW
-            </motion.a>
+            </motion.a> */}
+
+            <Link href="/apply">
+  <motion.div
+    className="font-mono font-bold text-xs tracking-widest px-6 py-3 rounded-sm text-center"
+    style={{ background: "#9BE931", color: "#0B0F1A" }}
+  >
+    APPLY NOW
+  </motion.div>
+</Link>
           </motion.div>
         )}
       </AnimatePresence>

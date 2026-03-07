@@ -172,7 +172,7 @@ export default function Hero() {
             className="flex items-center gap-4 flex-wrap"
           >
             <a
-              href="#apply"
+              href="/apply"
               className="font-mono font-bold text-sm tracking-wider px-8 py-4 rounded-sm no-underline transition-all duration-300"
               style={{ background: "#9BE931", color: "#0B0F1A" }}
               onMouseEnter={(e) => {

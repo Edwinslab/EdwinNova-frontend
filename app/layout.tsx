@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScrolling from "@/components/SmoothScrolling";
+import Cursor from "@/components/Cursor";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "EDWINNOVA 2026 — From Requirements to Reality",
@@ -24,6 +26,20 @@ export default function RootLayout({
       </head>
       <body>
         <SmoothScrolling>{children}</SmoothScrolling>
+        <Cursor />
+        <Toaster
+          position="bottom-right"
+          theme="dark"
+          toastOptions={{
+            style: {
+              background: "#111620",
+              border: "1px solid rgba(155,233,49,0.2)",
+              color: "#E6EDF3",
+              fontFamily: "'Space Mono', monospace",
+              fontSize: "12px",
+            },
+          }}
+        />
       </body>
     </html>
   );

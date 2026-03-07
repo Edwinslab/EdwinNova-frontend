@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WILDCARD — Open Innovation Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #08080f;
+    --dark:    #0d0d1a;
+    --purple:  #7c3aed;
+    --violet:  #a855f7;
+    --pink:    #ec4899;
+    --cyan:    #06b6d4;
+    --yellow:  #fbbf24;
+    --white:   #f8f8ff;
+    --muted:   #6b6b8a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%,  #7c3aed18 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 80% 30%,  #ec489918 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 50% 90%,  #06b6d418 0%, transparent 65%),
+      linear-gradient(180deg, #08080f 0%, #0f0a1a 50%, #08080f 100%);
+  }
+
+  /* Animated noise dots */
+  .noise {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); z-index: 0; pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+  }
+  .orb1 { width: 400px; height: 400px; background: #7c3aed22; top: -10%; left: -5%; animation-delay: 0s; }
+  .orb2 { width: 300px; height: 300px; background: #ec489922; top: 20%; right: -5%; animation-delay: -3s; }
+  .orb3 { width: 350px; height: 350px; background: #06b6d422; bottom: -10%; left: 30%; animation-delay: -5s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50%       { transform: translateY(-30px) scale(1.05); }
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.4em;
+    color: var(--violet); text-transform: uppercase;
+    border: 1px solid var(--violet);
+    padding: 0.4rem 1.4rem; border-radius: 2px;
+    margin-bottom: 2rem;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 18vw, 15rem);
+    line-height: 0.85; letter-spacing: 0.01em;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.85s ease 0.1s both;
+  }
+  .hero-title .c1 { color: var(--violet); }
+  .hero-title .c2 { color: var(--pink); }
+  .hero-title .c3 { color: var(--cyan); }
+  .hero-title .c4 { color: var(--yellow); }
+
+  /* Glitch effect on title */
+  .glitch {
+    position: relative;
+  }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0; right: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: inherit; line-height: inherit;
+    overflow: hidden;
+  }
+  .glitch::before {
+    color: var(--pink); clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    transform: translateX(-3px);
+    animation: glitch1 4s infinite;
+  }
+  .glitch::after {
+    color: var(--cyan); clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    transform: translateX(3px);
+    animation: glitch2 4s infinite;
+  }
+  @keyframes glitch1 {
+    0%, 90%, 100% { transform: translateX(-3px); opacity: 0; }
+    92%, 96%      { transform: translateX(-6px); opacity: 0.6; }
+    94%           { transform: translateX(3px);  opacity: 0.6; }
+  }
+  @keyframes glitch2 {
+    0%, 90%, 100% { transform: translateX(3px);  opacity: 0; }
+    92%, 96%      { transform: translateX(6px);  opacity: 0.6; }
+    94%           { transform: translateX(-3px); opacity: 0.6; }
+  }
+
+  .hero-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+    font-weight: 800; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--violet), var(--pink), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 1.5rem;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.95s ease 0.2s both;
+  }
+
+  .hero-desc {
+    max-width: 700px;
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    line-height: 1.8; color: #8888aa;
+    margin: 2rem auto 0;
+    position: relative; z-index: 1;
+    animation: fadeUp 1s ease 0.35s both;
+  }
+  .hero-desc strong { color: var(--white); }
+
+  .cta-row {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; margin-top: 3rem;
+    position: relative; z-index: 1;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.1em; padding: 1rem 2.5rem;
+    border: none; cursor: pointer; text-transform: uppercase;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent; color: var(--violet);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; letter-spacing: 0.1em;
+    padding: 1rem 2.5rem;
+    border: 1.5px solid var(--violet); cursor: pointer;
+    text-transform: uppercase; transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { background: var(--violet); color: var(--white); }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    color: #333355; z-index: 1;
+    animation: pulse 2s ease infinite;
+  }
+
+  /* ── STAT BAR ── */
+  .stat-bar {
+    display: flex; flex-wrap: wrap;
+    border-top: 1px solid #1a1a2e;
+    border-bottom: 1px solid #1a1a2e;
+    background: #050510;
+  }
+  .stat {
+    flex: 1; min-width: 150px; padding: 2rem;
+    text-align: center; border-right: 1px solid #1a1a2e;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; line-height: 1;
+    background: linear-gradient(135deg, var(--violet), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.2em;
+    color: #333355; text-transform: uppercase; margin-top: 0.4rem;
+  }
+
+  /* ── SECTION COMMONS ── */
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.4em;
+    color: var(--violet); text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1; margin-bottom: 2rem;
+  }
+
+  /* ── FREEDOM SECTION ── */
+  .freedom {
+    padding: 6rem 2rem;
+    background: #050510;
+    border-top: 1px solid #1a1a2e;
+  }
+  .freedom-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .freedom-text p {
+    font-size: 1.05rem; line-height: 1.8; color: #8888aa; margin-bottom: 1.2rem;
+  }
+  .freedom-text p strong { color: var(--white); }
+
+  .freedom-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .fcard {
+    background: #0d0d1a;
+    border: 1px solid #1a1a35;
+    padding: 1.5rem; border-radius: 4px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .fcard:hover { transform: translateY(-3px); border-color: var(--violet); }
+  .fcard-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+  .fcard-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.12em;
+    color: var(--muted); text-transform: uppercase;
+  }
+
+  /* ── RULES SECTION ── */
+  .rules {
+    padding: 6rem 2rem;
+    background: var(--bg);
+  }
+  .rules-inner { max-width: 1100px; margin: 0 auto; }
+
+  .rules-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem;
+  }
+  .rcard {
+    background: #0d0d1a;
+    border: 1px solid #1a1a35;
+    border-top: 3px solid transparent;
+    padding: 2rem; border-radius: 2px;
+    transition: transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .rcard:hover { transform: translateY(-4px); }
+  .rcard:nth-child(1) { border-top-color: var(--violet); }
+  .rcard:nth-child(2) { border-top-color: var(--pink); }
+  .rcard:nth-child(3) { border-top-color: var(--cyan); }
+  .rcard:nth-child(4) { border-top-color: var(--yellow); }
+  .rcard:nth-child(5) { border-top-color: #10b981; }
+  .rcard:nth-child(6) { border-top-color: #f97316; }
+
+  .rcard-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: #1a1a2e;
+    position: absolute; top: 0.5rem; right: 1rem;
+    line-height: 1;
+  }
+  .rcard-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .rcard-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 0.05em;
+    color: var(--white); margin-bottom: 0.6rem;
+  }
+  .rcard-text { font-size: 0.88rem; color: #6666aa; line-height: 1.6; }
+
+  /* ── IDEA SPARKS ── */
+  .sparks {
+    padding: 6rem 2rem;
+    background: #050510;
+    border-top: 1px solid #1a1a2e;
+  }
+  .sparks-inner { max-width: 1100px; margin: 0 auto; }
+
+  .sparks-marquee-wrap {
+    overflow: hidden; margin-top: 3rem;
+    mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  }
+  .sparks-marquee {
+    display: flex; gap: 1rem;
+    animation: marquee 30s linear infinite;
+    width: max-content;
+  }
+  .sparks-marquee:hover { animation-play-state: paused; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .spark-tag {
+    background: #0d0d1a;
+    border: 1px solid #1a1a35;
+    border-radius: 100px;
+    padding: 0.6rem 1.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.08em;
+    color: #8888aa; white-space: nowrap;
+    transition: border-color 0.2s, color 0.2s;
+    cursor: default;
+  }
+  .spark-tag:hover { border-color: var(--violet); color: var(--white); }
+  .spark-tag.v { color: var(--violet); border-color: #2a1a4a; }
+  .spark-tag.p { color: var(--pink);   border-color: #3a1a2a; }
+  .spark-tag.c { color: var(--cyan);   border-color: #0a2a3a; }
+  .spark-tag.y { color: var(--yellow); border-color: #3a2a0a; }
+
+  /* ── SOCIAL ── */
+  .social-section {
+    padding: 6rem 2rem;
+    background: var(--bg);
+    border-top: 1px solid #1a1a2e;
+  }
+  .social-inner { max-width: 960px; margin: 0 auto; }
+  .social-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;
+  }
+
+  .social-card {
+    background: #0d0d1a;
+    border: 1px solid #1a1a35;
+    border-radius: 4px; padding: 2rem;
+  }
+  .social-platform {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    color: var(--violet); text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .social-platform::before {
+    content: ''; display: inline-block;
+    width: 20px; height: 2px;
+    background: linear-gradient(90deg, var(--violet), var(--pink));
+  }
+  .social-copy {
+    font-size: 0.92rem; line-height: 1.8; color: #8888aa;
+  }
+  .social-copy .highlight { color: var(--yellow); font-weight: 700; }
+  .social-copy .tag       { color: var(--violet); }
+
+  .copy-btn {
+    margin-top: 1.5rem;
+    background: transparent;
+    border: 1px solid #1a1a35; color: #333355;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    padding: 0.5rem 1rem; cursor: pointer; text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { border-color: var(--violet); color: var(--violet); }
+  .copy-btn.copied { border-color: #10b981; color: #10b981; }
+
+  /* ── BROCHURE ── */
+  .brochure-section {
+    padding: 6rem 2rem;
+    background: #050510;
+    border-top: 1px solid #1a1a2e;
+  }
+  .brochure-inner { max-width: 900px; margin: 0 auto; }
+
+  .brochure-box {
+    background: #0d0d1a;
+    border: 1px solid #1a1a35;
+    border-radius: 4px; padding: 3.5rem;
+    margin-top: 2rem; position: relative; overflow: hidden;
+  }
+  .brochure-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--purple), var(--violet), var(--pink), var(--cyan), var(--yellow));
+  }
+  .brochure-watermark {
+    position: absolute; bottom: -2rem; right: -1rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14rem; color: #0d0d1a;
+    line-height: 1; user-select: none; pointer-events: none; z-index: 0;
+    filter: brightness(1.3);
+  }
+  .brochure-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 0.12em;
+    background: linear-gradient(90deg, var(--violet), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem; position: relative; z-index: 1;
+  }
+  .brochure-body {
+    font-size: 1.05rem; line-height: 1.95; color: #8888aa;
+    position: relative; z-index: 1;
+  }
+  .brochure-body p { margin-bottom: 1.3rem; }
+  .brochure-body strong { color: var(--white); }
+  .brochure-body em { color: var(--yellow); font-style: normal; font-weight: 700; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #030308;
+    border-top: 1px solid #1a1a2e;
+    padding: 3rem 2rem; text-align: center;
+  }
+  footer .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; letter-spacing: 0.1em;
+    background: linear-gradient(90deg, var(--violet), var(--pink), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: #222235; margin-top: 0.5rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+  }
+
+  @media (max-width: 768px) {
+    .freedom-inner { grid-template-columns: 1fr; }
+    .freedom-cards { grid-template-columns: 1fr 1fr; }
+    .rules-grid    { grid-template-columns: 1fr; }
+    .social-grid   { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="noise"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div class="hero-tag">⚡ Hackathon Domain Launch 2025 — Domain 03</div>
+
+  <h1 class="hero-title">
+    <span class="glitch" data-text="WILD">WILD</span><span class="c1">CARD</span><br>
+    <span class="c2">NO</span> <span class="c3">RULES</span><span class="c4">.</span>
+  </h1>
+
+  <div class="hero-sub">Your Idea. Your Domain. Your Rules.</div>
+
+  <p class="hero-desc">
+    No boundaries. No prescribed problems. No limits.
+    <strong>If you can dream it, design it, and build it —
+    this is your arena.</strong> The most dangerous ideas
+    don't fit neatly into a category. This domain was built for those ideas.
+  </p>
+
+  
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div class="stat-bar">
+  <div class="stat">
+    <div class="stat-num">∞</div>
+    <div class="stat-label">Problem Statements</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Domain Restrictions</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">Your Imagination</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">48H</div>
+    <div class="stat-label">To Change Everything</div>
+  </div>
+</div>
+
+<!-- ══════════════ FREEDOM SECTION ══════════════ -->
+<section class="freedom">
+  <div class="freedom-inner">
+    <div class="freedom-text">
+      <div class="section-label">// What Is This?</div>
+      <h2 class="section-title">The Domain<br>With <span style="color:var(--violet)">No</span><br>Domain.</h2>
+      <p>Every other hackathon domain gives you a problem. <strong>This one gives you a blank canvas.</strong> Walk in with any idea — from any field, any industry, any corner of your curiosity — and build something the world hasn't seen yet.</p>
+      <p>Healthcare? Go for it. Gaming? Absolutely. Space tech? Yes. AR for street vendors? A legal AI for rural India? A mental health app for college students? <strong>All of it belongs here.</strong></p>
+      <p>The only thing we're judging is: <strong>Does it solve a real problem? Is it bold? Can it scale?</strong> That's it. Everything else is up to you.</p>
+    </div>
+
+    <div class="freedom-cards">
+      <div class="fcard">
+        <div class="fcard-icon">🏥</div>
+        <div class="fcard-label">HealthTech</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">🎮</div>
+        <div class="fcard-label">Gaming & XR</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">🚀</div>
+        <div class="fcard-label">Space Tech</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">⚖️</div>
+        <div class="fcard-label">Legal Tech</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">🧠</div>
+        <div class="fcard-label">Mental Health</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">🎨</div>
+        <div class="fcard-label">Creative Tech</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">🌍</div>
+        <div class="fcard-label">Climate Tech</div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-icon">✨</div>
+        <div class="fcard-label">Anything Else</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ WHAT WE LOOK FOR ══════════════ -->
+<section class="rules">
+  <div class="rules-inner">
+    <div class="section-label">// What We Judge</div>
+    <h2 class="section-title">Six Things<br><span style="color:var(--pink)">That Win.</span></h2>
+
+    <div class="rules-grid">
+      <div class="rcard">
+        <div class="rcard-num">01</div>
+        <div class="rcard-icon">🎯</div>
+        <div class="rcard-title">Real Problem</div>
+        <div class="rcard-text">Does your idea solve something that genuinely hurts people? The best hacks scratch real itches — not imaginary ones. Ground your idea in truth.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-num">02</div>
+        <div class="rcard-icon">⚡</div>
+        <div class="rcard-title">Bold Vision</div>
+        <div class="rcard-text">Play big or go home. We don't want incremental improvements to existing apps. We want ideas that make judges say "why hasn't this been built yet?"</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-num">03</div>
+        <div class="rcard-icon">🔨</div>
+        <div class="rcard-title">Working Build</div>
+        <div class="rcard-text">A prototype that works — even partially — beats a perfect pitch deck every time. Show us something real. Click it. Demo it. Break it in front of us.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-num">04</div>
+        <div class="rcard-icon">📈</div>
+        <div class="rcard-title">Scale Potential</div>
+        <div class="rcard-text">Can this reach 1,000 users? 1 million? Tell us who needs this and how you'd get it to them. Ambition is not arrogance — it's a prerequisite.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-num">05</div>
+        <div class="rcard-icon">🌱</div>
+        <div class="rcard-title">Impact Story</div>
+        <div class="rcard-text">Who does this help? How does their life change because your product exists? Make us feel the impact — not just understand it intellectually.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-num">06</div>
+        <div class="rcard-icon">🤝</div>
+        <div class="rcard-title">Team Energy</div>
+        <div class="rcard-text">The team that built it matters as much as what they built. Passion is contagious. Clarity is rare. Bring both and the judges will remember you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="logo">WILDCARD</div>
+  <p>Your Idea. Your Domain. Your Rules.</p>
+  <p style="margin-top: 0.8rem;">Open Innovation · Any Domain · Any Problem · Any Solution · 48 Hours</p>
+</footer>
+
+<script>
+  function copyText(id, btn) {
+    const el = document.getElementById(id);
+    const text = el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy Text';
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  }
+</script>
+
+</body>
+</html>
