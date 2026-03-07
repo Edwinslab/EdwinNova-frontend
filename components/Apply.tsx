@@ -656,7 +656,7 @@ import Link from "next/link";
 
 const DOMAINS = [
   {
-    name: "Open Theme",
+    name: "Wildcard",
     href: "/wildcard",
     tag: "01",
     desc: "Build anything — your rules",
@@ -668,7 +668,7 @@ const DOMAINS = [
     desc: "Low-level systems & infra",
   },
   {
-    name: "Code Tide",
+    name: "TideHack",
     href: "/tidehack",
     tag: "03",
     desc: "Ride the wave of innovation",
