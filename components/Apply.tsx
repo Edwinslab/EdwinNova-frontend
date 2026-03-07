@@ -648,7 +648,6 @@
 //   );
 // }
 
-
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
@@ -719,11 +718,11 @@ export default function DomainButtons() {
   return (
     <section
       ref={ref}
-      className="min-h-screen flex flex-col items-center justify-center py-16 px-6"
+      className="flex flex-col items-center justify-center py-24 px-6"
     >
       {/* ── Countdown Header ── */}
       <motion.p
-        className="font-mono text-xs tracking-[0.35em] uppercase"
+        className="font-mono text-xs tracking-[0.35em] uppercase mb-6"
         style={{ color: "#9BE931" }}
         initial={{ opacity: 0, y: -10 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -735,13 +734,13 @@ export default function DomainButtons() {
 
       {/* ── Big Countdown Timer ── */}
       <motion.div
-        className="flex items-center justify-center gap-3 sm:gap-5 mb-14"
+        className="flex items-center justify-center gap-4 sm:gap-6 mb-10"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={inView ? { opacity: 1, scale: 1 } : {}}
         transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
       >
         {units.map((u, i) => (
-          <div key={u.label} className="flex items-center gap-3 sm:gap-5">
+          <div key={u.label} className="flex items-center gap-4 sm:gap-6">
             <div className="flex flex-col items-center">
               <div
                 className="relative rounded-2xl flex items-center justify-center"
@@ -820,7 +819,7 @@ export default function DomainButtons() {
 
       {/* ── Domain Label ── */}
       <motion.p
-        className="font-mono text-[11px] tracking-[0.3em] uppercase mb-7"
+        className="font-mono text-[11px] tracking-[0.3em] uppercase mb-5"
         style={{ color: "rgba(155,233,49,0.5)", fontWeight: 500 }}
         initial={{ opacity: 0, y: 10 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}

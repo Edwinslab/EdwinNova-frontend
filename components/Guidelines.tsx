@@ -4,7 +4,7 @@ import { useRef } from "react";
 import ProposalViewer from "@/components/proposalviewer";
 
 const GUIDELINES = [
-  "Team of exactly 5 members — 4 devs/designers + 1 PM/business lead",
+  "Team of exactly 5 members 4 devs/designers + 1 PM/business lead",
   "Submit a detailed proposal with problem statement and market analysis",
   "Include GitHub profiles for all technical members",
   "Proposal must demonstrate clear market potential and viability",
@@ -18,8 +18,8 @@ export default function Guidelines() {
     <section
       id="guidelines"
       ref={ref}
-      style={{ background: "#0B0F1A", padding: "112px 5%" }}
       className="relative overflow-hidden"
+      style={{ background: "#0B0F1A", padding: "100px 5%" }}
     >
       {/* Background glow */}
       <div
@@ -47,28 +47,36 @@ export default function Guidelines() {
         transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
       />
 
-      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Section label */}
+      <div
+        style={{
+          maxWidth: 800,
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {/* Section label — centered */}
         <motion.p
           style={{
             fontFamily: "'Space Mono', monospace",
             fontSize: 11,
             letterSpacing: "0.3em",
             color: "#9BE931",
-            marginBottom: 16,
+            marginBottom: 14,
+            textAlign: "center",
           }}
-          initial={{ opacity: 0, x: -20 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          initial={{ opacity: 0, y: -10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
           // PROPOSAL GUIDELINES
         </motion.p>
 
-        {/* Heading */}
-        <div style={{ overflow: "hidden", marginBottom: 12 }}>
+        {/* Heading — centered */}
+        <div style={{ overflow: "hidden", marginBottom: 10, textAlign: "center" }}>
           <motion.h2
             style={{
-              fontFamily: "'Syne', sans-serif",
+            //   fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
               fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
               color: "#E6EDF3",
@@ -83,32 +91,34 @@ export default function Guidelines() {
           </motion.h2>
         </div>
 
-        {/* Description */}
+        {/* Description — centered */}
         <motion.p
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 15,
             color: "rgba(230,237,243,0.45)",
             lineHeight: 1.75,
-            maxWidth: 600,
-            marginBottom: 40,
+            maxWidth: 560,
+            margin: "0 auto",
+            marginBottom: 36,
+            textAlign: "center",
           }}
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
           Your proposal is your first impression. Review the guidelines
-          carefully before submitting — strong proposals have a clear problem
+          carefully before submitting strong proposals have a clear problem
           statement, market analysis, and a credible team.
         </motion.p>
 
-        {/* Guidelines list */}
+        {/* Guidelines grid — 2x2 on desktop, stacked on mobile */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(2, 1fr)",
             gap: 12,
-            marginBottom: 48,
+            marginBottom: 36,
           }}
         >
           {GUIDELINES.map((item, i) => (
@@ -118,7 +128,7 @@ export default function Guidelines() {
                 display: "flex",
                 alignItems: "flex-start",
                 gap: 14,
-                padding: "16px 20px",
+                padding: "18px 20px",
                 background: "rgba(155,233,49,0.03)",
                 border: "1px solid rgba(155,233,49,0.08)",
                 borderRadius: 12,
@@ -153,8 +163,9 @@ export default function Guidelines() {
           ))}
         </div>
 
-        {/* PDF Viewer Button */}
+        {/* PDF Viewer Button — centered */}
         <motion.div
+          style={{ display: "flex", justifyContent: "center" }}
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.5 }}

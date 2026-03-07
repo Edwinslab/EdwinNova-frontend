@@ -291,6 +291,8 @@
 // function delay(ms: number) {
 //   return new Promise((resolve) => setTimeout(resolve, ms));
 // }
+
+
 "use client";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -315,7 +317,6 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
     let cancelled = false;
 
     const run = async () => {
-      // Step 1: panels are already fully open — fade in logo + text immediately
       await delay(100);
       if (cancelled) return;
       logo.style.transition = "opacity 0.5s ease, transform 0.5s ease";
@@ -325,19 +326,16 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
       text.style.opacity = "1";
       text.style.transform = "translateY(0)";
 
-      // Step 2: Hold so user can read it
       await delay(1800);
       setShowColor(true);
       await delay(200);
       if (cancelled) return;
 
-      // Step 3: Split apart
       top.style.transition = "transform 0.75s cubic-bezier(0.76,0,0.24,1)";
       top.style.transform = "translateY(-100%)";
       bottom.style.transition = "transform 0.75s cubic-bezier(0.76,0,0.24,1)";
       bottom.style.transform = "translateY(100%)";
 
-      // Step 4: Fade out then reveal main
       await delay(650);
       if (cancelled) return;
       container.style.transition = "opacity 0.25s ease";
@@ -381,7 +379,7 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
         }}
       />
 
-      {/* Corner labels - responsive */}
+      {/* Corner labels */}
       <div
         style={{
           position: "absolute",
@@ -443,7 +441,7 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
         MANGALURU, KA
       </div>
 
-      {/* TOP PANEL — dark, logo at bottom */}
+      {/* TOP PANEL */}
       <div
         ref={topRef}
         style={{
@@ -472,6 +470,7 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            paddingTop: "clamp(10px, 3vh, 20px)",
             paddingBottom: "clamp(20px, 5vh, 40px)",
             zIndex: 2,
             width: "100%",
@@ -484,7 +483,7 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
             width={200}
             height={100}
             alt="Edwin Nova Logo"
-            style={{ 
+            style={{
               animation: "floatBob 2.5s ease-in-out infinite",
               maxWidth: "min(200px, 60vw)",
               height: "auto",
@@ -494,7 +493,7 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
         </div>
       </div>
 
-      {/* BOTTOM PANEL — dark, text at top */}
+      {/* BOTTOM PANEL */}
       <div
         ref={bottomRef}
         style={{
