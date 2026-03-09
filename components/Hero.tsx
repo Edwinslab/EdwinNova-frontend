@@ -81,7 +81,7 @@ export default function Hero() {
     <section
   id="hero"
   ref={ref as any}
-  className="relative min-h-[140vh] md:min-h-screen flex items-center pt-20 overflow-hidden"
+  className="relative min-h-screen flex items-center pt-20 overflow-hidden"
   style={{ padding: "100px 5% 80px" }}
 >
       <HeroScene />
