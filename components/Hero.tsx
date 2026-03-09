@@ -82,7 +82,7 @@ export default function Hero() {
   id="hero"
   ref={ref as any}
   className="relative min-h-screen flex items-center pt-20 overflow-hidden"
-  style={{ padding: "100px 5% 80px" }}
+  style={{ padding: "80px 5% 50px" }}
 >
       <HeroScene />
       {/* Background */}
