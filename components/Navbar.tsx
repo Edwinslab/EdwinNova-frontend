@@ -11,6 +11,7 @@ const links = [
   { label: "Stages", href: "#stages" },
   { label: "Prizes", href: "#prizes" },
   { label: "Incubation", href: "#incubation" },
+  { label: "Domains", href: "#domains" },
 ];
 
 export default function Navbar() {
@@ -34,6 +35,7 @@ export default function Navbar() {
   if (!href.startsWith("#")) return; 
 
   e.preventDefault();
+  
   if (lenis) {
     lenis.scrollTo(href);
   }

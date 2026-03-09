@@ -64,7 +64,7 @@ export default function Stages() {
         {/* Sticky Header */}
         <div className="absolute top-16 md:top-24 left-6 md:left-16 lg:left-24 z-10 pointer-events-none">
           <p className="font-mono text-xs tracking-[0.3em] uppercase mb-4" style={{ color: "#9BE931" }}>
-            // Competition Format
+            // Competition Formate
           </p>
           <h2 className="font-syne font-extrabold leading-tight text-white" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
             6 Stages of <span style={{ color: "#9BE931" }}>Innovation</span>

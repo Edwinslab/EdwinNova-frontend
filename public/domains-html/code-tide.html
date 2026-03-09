@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TIDEHACK — Coastal Innovation Challenge</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
   :root {
     --ocean: #003049;
@@ -71,6 +72,7 @@
     border-radius: 2px;
     margin-bottom: 2rem;
     position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 0.6rem;
     animation: fadeUp 0.8s ease both;
   }
 
@@ -82,7 +84,6 @@
     position: relative; z-index: 1;
     animation: fadeUp 0.9s ease 0.1s both;
   }
-
   .hero-title span.accent { color: var(--foam); }
   .hero-title span.coral  { color: var(--coral); }
 
@@ -107,50 +108,7 @@
     position: relative; z-index: 1;
     animation: fadeUp 1s ease 0.35s both;
   }
-
-  .cta-row {
-    display: flex; gap: 1rem; flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 3rem;
-    position: relative; z-index: 1;
-    animation: fadeUp 1s ease 0.5s both;
-  }
-
-  .btn-primary {
-    background: var(--coral);
-    color: #fff;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    padding: 1rem 2.5rem;
-    border: none; cursor: pointer;
-    text-transform: uppercase;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    transition: background 0.2s, transform 0.2s;
-  }
-  .btn-primary:hover { background: #ff5a65; transform: translateY(-2px); }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--foam);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    padding: 1rem 2.5rem;
-    border: 1.5px solid var(--foam);
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.2s, color 0.2s;
-  }
-  .btn-outline:hover { background: var(--foam); color: var(--dark); }
-
-  .scroll-hint {
-    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.3em;
-    color: #4a7a99; z-index: 1;
-    animation: pulse 2s ease infinite;
-  }
+  .hero-desc strong { color: var(--white); }
 
   /* ── STAT BAR ── */
   .stat-bar {
@@ -222,7 +180,15 @@
     padding: 1.2rem;
     border-radius: 2px;
   }
-  .pcard-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .pcard-icon {
+    width: 38px; height: 38px;
+    background: rgba(230,57,70,0.1);
+    border: 1px solid rgba(230,57,70,0.25);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.75rem;
+    color: var(--coral);
+  }
   .pcard-title {
     font-family: 'Space Mono', monospace;
     font-size: 0.7rem; letter-spacing: 0.1em;
@@ -232,125 +198,50 @@
   .pcard-text { font-size: 0.85rem; color: #7aabb8; line-height: 1.5; }
 
   /* ── DOMAIN SECTION ── */
-  .domain {
-    background: var(--dark);
-    max-width: 1100px; margin: 0 auto;
-  }
-  .domain-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
-    margin-top: 3rem;
-  }
   .dcard {
     background: linear-gradient(135deg, #0a2030 0%, #071820 100%);
     border: 1px solid #0d3d5a;
     border-top: 3px solid var(--foam);
-    padding: 2rem;
+    padding: 3rem;
     border-radius: 2px;
-    transition: transform 0.2s, border-color 0.2s;
     position: relative; overflow: hidden;
   }
-  .dcard:hover { transform: translateY(-4px); border-top-color: var(--coral); }
-  .dcard::after {
-    content: ''; position: absolute;
-    bottom: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--foam), var(--coral));
-    opacity: 0; transition: opacity 0.2s;
+  .dcard::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,180,216,0.04) 0%, transparent 70%);
+    pointer-events: none;
   }
-  .dcard:hover::after { opacity: 1; }
-  .dcard-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+
+  .dcard-icon-wrap {
+    width: 52px; height: 52px;
+    background: rgba(0,180,216,0.1);
+    border: 1px solid rgba(0,180,216,0.25);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.2rem;
+    color: var(--foam);
+  }
+
   .dcard-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem; color: var(--white);
-    letter-spacing: 0.05em; margin-bottom: 0.6rem;
+    font-size: 2rem; color: var(--white);
+    letter-spacing: 0.05em; margin-bottom: 0.8rem;
   }
-  .dcard-text { font-size: 0.9rem; color: #7aabb8; line-height: 1.6; }
+  .dcard-text {
+    font-size: 1.05rem; color: #7aabb8;
+    line-height: 1.8; margin-bottom: 1.5rem;
+  }
+  .dcard-text strong { color: var(--white); }
+
   .dcard-tag {
     display: inline-block;
     font-family: 'Space Mono', monospace;
     font-size: 0.6rem; letter-spacing: 0.15em;
     color: var(--sand); border: 1px solid #3a5a6a;
-    padding: 0.2rem 0.6rem; margin-top: 1rem;
+    padding: 0.2rem 0.6rem; margin: 0.2rem 0.2rem 0 0;
     text-transform: uppercase;
   }
-
-  /* ── SOCIAL SECTION ── */
-  .social-section {
-    background: #040f18;
-    border-top: 1px solid #0d2d42;
-  }
-  .social-inner { max-width: 900px; margin: 0 auto; }
-  .social-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
-
-  .social-card {
-    background: #0a2030;
-    border: 1px solid #0d3d5a;
-    border-radius: 4px;
-    padding: 2rem;
-    position: relative;
-  }
-  .social-platform {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.3em;
-    color: var(--foam); text-transform: uppercase;
-    margin-bottom: 1.2rem;
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  .social-platform::before {
-    content: ''; display: inline-block;
-    width: 20px; height: 2px; background: var(--foam);
-  }
-  .social-copy {
-    font-size: 0.95rem; line-height: 1.75; color: #c8dde8;
-    font-family: 'Syne', sans-serif;
-  }
-  .social-copy .highlight { color: var(--sand); font-weight: 700; }
-  .social-copy .tag { color: var(--foam); }
-
-  .copy-btn {
-    margin-top: 1.5rem;
-    background: transparent;
-    border: 1px solid #1a4060;
-    color: #4a8aaa;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.15em;
-    padding: 0.5rem 1rem;
-    cursor: pointer; text-transform: uppercase;
-    transition: all 0.2s;
-  }
-  .copy-btn:hover { border-color: var(--foam); color: var(--foam); }
-  .copy-btn.copied { border-color: #2ecc71; color: #2ecc71; }
-
-  /* ── BROCHURE SECTION ── */
-  .brochure-section {
-    background: var(--dark);
-    border-top: 1px solid #0d2d42;
-  }
-  .brochure-inner { max-width: 900px; margin: 0 auto; }
-
-  .brochure-box {
-    background: linear-gradient(135deg, #0a2030 0%, #071820 100%);
-    border: 1px solid #0d3d5a;
-    border-radius: 4px;
-    padding: 3rem;
-    margin-top: 2rem;
-    position: relative; overflow: hidden;
-  }
-  .brochure-box::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(90deg, var(--wave), var(--foam), var(--coral));
-  }
-  .brochure-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem; letter-spacing: 0.1em;
-    color: var(--foam); margin-bottom: 1.5rem;
-  }
-  .brochure-body {
-    font-size: 1rem; line-height: 1.9; color: #b8d0de;
-  }
-  .brochure-body p { margin-bottom: 1.2rem; }
-  .brochure-body strong { color: var(--white); }
-  .brochure-body em { color: var(--sand); font-style: normal; font-weight: 700; }
 
   /* ── FOOTER ── */
   footer {
@@ -382,7 +273,6 @@
   @media (max-width: 768px) {
     .problem-inner { grid-template-columns: 1fr; }
     .problem-cards { grid-template-columns: 1fr; }
-    .social-cards { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -393,7 +283,10 @@
   <div class="hero-bg"></div>
   <div class="wave-lines"></div>
 
-  <div class="hero-tag">🌊 Hackathon Domain Launch 2025</div>
+  <div class="hero-tag">
+    <i data-lucide="waves" style="width:14px;height:14px"></i>
+    Hackathon Domain Launch 2026
+  </div>
 
   <h1 class="hero-title">
     TIDE<span class="accent">HACK</span><br>
@@ -408,7 +301,6 @@
     It's time technology sailed with them — not past them.
     This is your challenge. This is <strong>TideHack</strong>.
   </p>
-
 </section>
 
 <!-- ══════════════ STATS ══════════════ -->
@@ -441,24 +333,25 @@
       <p>They are the backbone of a <strong>₹2.5 lakh crore industry</strong> — yet they remain the most digitally invisible community in the country.</p>
       <p><strong>That's where you come in.</strong> As a student builder, you have the tools, the creativity, and now — the challenge — to change this.</p>
     </div>
+
     <div class="problem-cards">
       <div class="pcard">
-        <div class="pcard-icon">⛈️</div>
+        <div class="pcard-icon"><i data-lucide="cloud-lightning" style="width:18px;height:18px"></i></div>
         <div class="pcard-title">No Weather Alerts</div>
         <div class="pcard-text">Fishermen rely on word-of-mouth for sea conditions. Lives are lost every monsoon season.</div>
       </div>
       <div class="pcard">
-        <div class="pcard-icon">💸</div>
+        <div class="pcard-icon"><i data-lucide="landmark" style="width:18px;height:18px"></i></div>
         <div class="pcard-title">Unfair Pricing</div>
         <div class="pcard-text">Middlemen control fish auction prices. Fishermen earn a fraction of the true market value.</div>
       </div>
       <div class="pcard">
-        <div class="pcard-icon">🆘</div>
+        <div class="pcard-icon"><i data-lucide="siren" style="width:18px;height:18px"></i></div>
         <div class="pcard-title">No SOS Systems</div>
         <div class="pcard-text">Vessels in distress have no reliable digital rescue coordination system in place.</div>
       </div>
       <div class="pcard">
-        <div class="pcard-icon">🏦</div>
+        <div class="pcard-icon"><i data-lucide="banknote" style="width:18px;height:18px"></i></div>
         <div class="pcard-title">Zero Credit Access</div>
         <div class="pcard-text">Fishermen can't access formal loans or insurance, leaving them in perpetual debt cycles.</div>
       </div>
@@ -466,31 +359,29 @@
   </div>
 </section>
 
-<!-- ══════════════ DOMAIN ══════════════ -->
+<!-- ══════════════ MISSION ══════════════ -->
 <section style="padding: 6rem 2rem; background: var(--dark);">
-  <div class="domain" style="max-width:1100px; margin: 0 auto;">
+  <div style="max-width:1100px; margin: 0 auto;">
     <div class="section-label">// The Mission</div>
     <h2 class="section-title">One Coast.<br><span style="color:var(--foam)">Infinite Solutions.</span></h2>
 
-    <div class="domain-single-track">
-      <div class="dcard" style="max-width: 100%; text-align: left; padding: 3rem;">
-        <div class="dcard-icon">🌊</div>
-        <div class="dcard-title">Integrated Coastal Innovation</div>
-        <div class="dcard-text" style="line-height: 1.8; font-size: 1.1rem; opacity: 0.9;">
-          This challenge focuses on transforming the maritime ecosystem through a multi-dimensional approach. We are looking for <strong>Disaster Tech</strong> solutions like real-time cyclone alerts and <strong>IoT-based safety</strong> systems for GPS vessel tracking to protect lives at sea. To empower local economies, we encourage the development of <strong>FinTech</strong> platforms for transparent fish price discovery and <strong>Financial Inclusion</strong> tools that provide micro-loans and parametric insurance to coastal communities. Furthermore, we aim to bridge the digital divide using <strong>Conversational AI</strong> in vernacular languages like Kannada and Tamil. Beyond these tracks, we welcome <strong>Open Innovation</strong> in the broader Blue Economy—including aquaculture, marine biodiversity, and sustainable coastal tourism.
-        </div>
-        <div style="margin-top: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap;">
-          <span class="dcard-tag">Safety & IoT</span>
-          <span class="dcard-tag">FinTech</span>
-          <span class="dcard-tag">Vernacular AI</span>
-          <span class="dcard-tag">Blue Economy</span>
-        </div>
+    <div class="dcard">
+      <div class="dcard-icon-wrap">
+        <i data-lucide="anchor" style="width:24px;height:24px"></i>
+      </div>
+      <div class="dcard-title">Integrated Coastal Innovation</div>
+      <div class="dcard-text">
+        This challenge focuses on transforming the maritime ecosystem through a multi-dimensional approach. We are looking for <strong>Disaster Tech</strong> solutions like real-time cyclone alerts and <strong>IoT-based safety</strong> systems for GPS vessel tracking to protect lives at sea. To empower local economies, we encourage the development of <strong>FinTech</strong> platforms for transparent fish price discovery and <strong>Financial Inclusion</strong> tools that provide micro-loans and parametric insurance to coastal communities. Furthermore, we aim to bridge the digital divide using <strong>Conversational AI</strong> in vernacular languages like Kannada and Tamil. Beyond these tracks, we welcome <strong>Open Innovation</strong> in the broader Blue Economy — including aquaculture, marine biodiversity, and sustainable coastal tourism.
+      </div>
+      <div>
+        <span class="dcard-tag">Safety & IoT</span>
+        <span class="dcard-tag">FinTech</span>
+        <span class="dcard-tag">Vernacular AI</span>
+        <span class="dcard-tag">Blue Economy</span>
       </div>
     </div>
   </div>
 </section>
-
-
 
 <!-- ══════════════ FOOTER ══════════════ -->
 <footer>
@@ -500,18 +391,7 @@
 </footer>
 
 <script>
-  function copyText(id, btn) {
-    const el = document.getElementById(id);
-    const text = el.innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✓ Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'Copy Text';
-        btn.classList.remove('copied');
-      }, 2000);
-    });
-  }
+  lucide.createIcons();
 </script>
 
 </body>

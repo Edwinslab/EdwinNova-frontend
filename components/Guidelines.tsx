@@ -2,12 +2,25 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import ProposalViewer from "@/components/proposalviewer";
+import { Users, FileText, Github, TrendingUp } from "lucide-react";
 
 const GUIDELINES = [
-  "Team of exactly 5 members 4 devs/designers + 1 PM/business lead",
-  "Submit a detailed proposal with problem statement and market analysis",
-  "Include GitHub profiles for all technical members",
-  "Proposal must demonstrate clear market potential and viability",
+  {
+    icon: Users,
+    text: "Team of exactly 5 members — 4 devs/designers + 1 PM/business lead",
+  },
+  {
+    icon: FileText,
+    text: "Submit a detailed proposal with problem statement and market analysis",
+  },
+  {
+    icon: Github,
+    text: "Include GitHub profiles for all technical members",
+  },
+  {
+    icon: TrendingUp,
+    text: "Proposal must demonstrate clear market potential and viability",
+  },
 ];
 
 export default function Guidelines() {
@@ -19,7 +32,7 @@ export default function Guidelines() {
       id="guidelines"
       ref={ref}
       className="relative overflow-hidden"
-      style={{ background: "#0B0F1A", padding: "100px 5%" }}
+      style={{ padding: "100px 5%" }}
     >
       {/* Background glow */}
       <div
@@ -27,8 +40,7 @@ export default function Guidelines() {
         style={{
           width: 500,
           height: 500,
-          background:
-            "radial-gradient(circle, rgba(155,233,49,0.04) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(155,233,49,0.04) 0%, transparent 70%)",
           top: "30%",
           left: "-10%",
         }}
@@ -55,7 +67,7 @@ export default function Guidelines() {
           zIndex: 1,
         }}
       >
-        {/* Section label — centered */}
+        {/* ── Section label ── */}
         <motion.p
           style={{
             fontFamily: "'Space Mono', monospace",
@@ -72,11 +84,10 @@ export default function Guidelines() {
           // PROPOSAL GUIDELINES
         </motion.p>
 
-        {/* Heading — centered */}
+        {/* ── Heading ── */}
         <div style={{ overflow: "hidden", marginBottom: 10, textAlign: "center" }}>
           <motion.h2
             style={{
-            //   fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
               fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
               color: "#E6EDF3",
@@ -91,12 +102,12 @@ export default function Guidelines() {
           </motion.h2>
         </div>
 
-        {/* Description — centered */}
+        {/* ── Description ── */}
         <motion.p
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 15,
-            color: "rgba(230,237,243,0.45)",
+            color: "rgba(230,237,243,0.7)",
             lineHeight: 1.75,
             maxWidth: 560,
             margin: "0 auto",
@@ -107,63 +118,77 @@ export default function Guidelines() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          Your proposal is your first impression. Review the guidelines
-          carefully before submitting strong proposals have a clear problem
-          statement, market analysis, and a credible team.
+          Your proposal is your first impression. Review the guidelines carefully
+          before submitting strong proposals have a clear problem statement,
+          market analysis, and a credible team.
         </motion.p>
 
-        {/* Guidelines grid — 2x2 on desktop, stacked on mobile */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: 12,
-            marginBottom: 36,
-          }}
-        >
-          {GUIDELINES.map((item, i) => (
-            <motion.div
-              key={i}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 14,
-                padding: "18px 20px",
-                background: "rgba(155,233,49,0.03)",
-                border: "1px solid rgba(155,233,49,0.08)",
-                borderRadius: 12,
-              }}
-              initial={{ opacity: 0, y: 12 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-            >
-              <span
+        {/* ── Guidelines grid: 2 col desktop, 1 col mobile ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-9">
+          {GUIDELINES.map((item, i) => {
+            const Icon = item.icon; 
+            return (
+              <motion.div
+                key={i}
                 style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: 10,
-                  color: "rgba(155,233,49,0.4)",
-                  letterSpacing: "0.1em",
-                  flexShrink: 0,
-                  marginTop: 2,
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 14,
+                  padding: "18px 20px",
+                  background: "rgba(155,233,49,0.03)",
+                  border: "1px solid rgba(155,233,49,0.1)",
+                  borderRadius: 12,
+                  transition: "border-color 0.25s, background 0.25s",
+                }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(155,233,49,0.28)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(155,233,49,0.06)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(155,233,49,0.1)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(155,233,49,0.03)";
                 }}
               >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 14,
-                  color: "rgba(230,237,243,0.55)",
-                  lineHeight: 1.6,
-                }}
-              >
-                {item}
-              </span>
-            </motion.div>
-          ))}
+                {/* Icon */}
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 9,
+                    background: "rgba(155,233,49,0.08)",
+                    border: "1px solid rgba(155,233,49,0.18)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    marginTop: 1,
+                  }}
+                >
+                  <Icon size={16} color="#9BE931" strokeWidth={1.8} />
+                </div>
+
+                {/* Text */}
+                <span
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 14,
+                    color: "rgba(230,237,243,0.8)",
+                    lineHeight: 1.65,
+                  }}
+                >
+                  {item.text}
+                </span>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* PDF Viewer Button — centered */}
+        
+
+        {/* ── PDF Viewer Button ── */}
         <motion.div
           style={{ display: "flex", justifyContent: "center" }}
           initial={{ opacity: 0, y: 16 }}

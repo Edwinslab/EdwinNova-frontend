@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WILDCARD — Open Innovation Challenge</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
   :root {
     --bg:      #08080f;
@@ -27,7 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* ── HERO ── */
   .hero {
     min-height: 100vh;
     position: relative;
@@ -49,14 +49,12 @@
       linear-gradient(180deg, #08080f 0%, #0f0a1a 50%, #08080f 100%);
   }
 
-  /* Animated noise dots */
   .noise {
     position: absolute; inset: 0; z-index: 0; opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-size: 200px 200px;
   }
 
-  /* Floating orbs */
   .orb {
     position: absolute; border-radius: 50%;
     filter: blur(80px); z-index: 0; pointer-events: none;
@@ -79,6 +77,7 @@
     padding: 0.4rem 1.4rem; border-radius: 2px;
     margin-bottom: 2rem;
     position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 0.6rem;
     animation: fadeUp 0.7s ease both;
   }
 
@@ -94,10 +93,7 @@
   .hero-title .c3 { color: var(--cyan); }
   .hero-title .c4 { color: var(--yellow); }
 
-  /* Glitch effect on title */
-  .glitch {
-    position: relative;
-  }
+  .glitch { position: relative; }
   .glitch::before, .glitch::after {
     content: attr(data-text);
     position: absolute; top: 0; left: 0; right: 0;
@@ -148,35 +144,6 @@
     animation: fadeUp 1s ease 0.35s both;
   }
   .hero-desc strong { color: var(--white); }
-
-  .cta-row {
-    display: flex; gap: 1rem; flex-wrap: wrap;
-    justify-content: center; margin-top: 3rem;
-    position: relative; z-index: 1;
-    animation: fadeUp 1s ease 0.5s both;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--purple), var(--pink));
-    color: #fff;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem; font-weight: 700;
-    letter-spacing: 0.1em; padding: 1rem 2.5rem;
-    border: none; cursor: pointer; text-transform: uppercase;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
-
-  .btn-outline {
-    background: transparent; color: var(--violet);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem; letter-spacing: 0.1em;
-    padding: 1rem 2.5rem;
-    border: 1.5px solid var(--violet); cursor: pointer;
-    text-transform: uppercase; transition: background 0.2s, color 0.2s;
-  }
-  .btn-outline:hover { background: var(--violet); color: var(--white); }
 
   .scroll-hint {
     position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
@@ -250,7 +217,16 @@
     cursor: default;
   }
   .fcard:hover { transform: translateY(-3px); border-color: var(--violet); }
-  .fcard-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+  .fcard-icon {
+    width: 40px; height: 40px;
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.75rem;
+    color: var(--violet);
+  }
+  .fcard:hover .fcard-icon { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.4); }
   .fcard-label {
     font-family: 'Space Mono', monospace;
     font-size: 0.68rem; letter-spacing: 0.12em;
@@ -289,142 +265,25 @@
     position: absolute; top: 0.5rem; right: 1rem;
     line-height: 1;
   }
-  .rcard-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .rcard-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .rcard:nth-child(1) .rcard-icon { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); color: var(--violet); }
+  .rcard:nth-child(2) .rcard-icon { background: rgba(236,72,153,0.1); border: 1px solid rgba(236,72,153,0.2); color: var(--pink); }
+  .rcard:nth-child(3) .rcard-icon { background: rgba(6,182,212,0.1);  border: 1px solid rgba(6,182,212,0.2);  color: var(--cyan); }
+  .rcard:nth-child(4) .rcard-icon { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); color: var(--yellow); }
+  .rcard:nth-child(5) .rcard-icon { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: #10b981; }
+  .rcard:nth-child(6) .rcard-icon { background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); color: #f97316; }
+
   .rcard-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.5rem; letter-spacing: 0.05em;
     color: var(--white); margin-bottom: 0.6rem;
   }
   .rcard-text { font-size: 0.88rem; color: #6666aa; line-height: 1.6; }
-
-  /* ── IDEA SPARKS ── */
-  .sparks {
-    padding: 6rem 2rem;
-    background: #050510;
-    border-top: 1px solid #1a1a2e;
-  }
-  .sparks-inner { max-width: 1100px; margin: 0 auto; }
-
-  .sparks-marquee-wrap {
-    overflow: hidden; margin-top: 3rem;
-    mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-  }
-  .sparks-marquee {
-    display: flex; gap: 1rem;
-    animation: marquee 30s linear infinite;
-    width: max-content;
-  }
-  .sparks-marquee:hover { animation-play-state: paused; }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  .spark-tag {
-    background: #0d0d1a;
-    border: 1px solid #1a1a35;
-    border-radius: 100px;
-    padding: 0.6rem 1.4rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem; letter-spacing: 0.08em;
-    color: #8888aa; white-space: nowrap;
-    transition: border-color 0.2s, color 0.2s;
-    cursor: default;
-  }
-  .spark-tag:hover { border-color: var(--violet); color: var(--white); }
-  .spark-tag.v { color: var(--violet); border-color: #2a1a4a; }
-  .spark-tag.p { color: var(--pink);   border-color: #3a1a2a; }
-  .spark-tag.c { color: var(--cyan);   border-color: #0a2a3a; }
-  .spark-tag.y { color: var(--yellow); border-color: #3a2a0a; }
-
-  /* ── SOCIAL ── */
-  .social-section {
-    padding: 6rem 2rem;
-    background: var(--bg);
-    border-top: 1px solid #1a1a2e;
-  }
-  .social-inner { max-width: 960px; margin: 0 auto; }
-  .social-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;
-  }
-
-  .social-card {
-    background: #0d0d1a;
-    border: 1px solid #1a1a35;
-    border-radius: 4px; padding: 2rem;
-  }
-  .social-platform {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.3em;
-    color: var(--violet); text-transform: uppercase;
-    margin-bottom: 1.2rem;
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  .social-platform::before {
-    content: ''; display: inline-block;
-    width: 20px; height: 2px;
-    background: linear-gradient(90deg, var(--violet), var(--pink));
-  }
-  .social-copy {
-    font-size: 0.92rem; line-height: 1.8; color: #8888aa;
-  }
-  .social-copy .highlight { color: var(--yellow); font-weight: 700; }
-  .social-copy .tag       { color: var(--violet); }
-
-  .copy-btn {
-    margin-top: 1.5rem;
-    background: transparent;
-    border: 1px solid #1a1a35; color: #333355;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.15em;
-    padding: 0.5rem 1rem; cursor: pointer; text-transform: uppercase;
-    transition: all 0.2s;
-  }
-  .copy-btn:hover { border-color: var(--violet); color: var(--violet); }
-  .copy-btn.copied { border-color: #10b981; color: #10b981; }
-
-  /* ── BROCHURE ── */
-  .brochure-section {
-    padding: 6rem 2rem;
-    background: #050510;
-    border-top: 1px solid #1a1a2e;
-  }
-  .brochure-inner { max-width: 900px; margin: 0 auto; }
-
-  .brochure-box {
-    background: #0d0d1a;
-    border: 1px solid #1a1a35;
-    border-radius: 4px; padding: 3.5rem;
-    margin-top: 2rem; position: relative; overflow: hidden;
-  }
-  .brochure-box::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(90deg, var(--purple), var(--violet), var(--pink), var(--cyan), var(--yellow));
-  }
-  .brochure-watermark {
-    position: absolute; bottom: -2rem; right: -1rem;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 14rem; color: #0d0d1a;
-    line-height: 1; user-select: none; pointer-events: none; z-index: 0;
-    filter: brightness(1.3);
-  }
-  .brochure-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem; letter-spacing: 0.12em;
-    background: linear-gradient(90deg, var(--violet), var(--pink));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 2rem; position: relative; z-index: 1;
-  }
-  .brochure-body {
-    font-size: 1.05rem; line-height: 1.95; color: #8888aa;
-    position: relative; z-index: 1;
-  }
-  .brochure-body p { margin-bottom: 1.3rem; }
-  .brochure-body strong { color: var(--white); }
-  .brochure-body em { color: var(--yellow); font-style: normal; font-weight: 700; }
 
   /* ── FOOTER ── */
   footer {
@@ -445,7 +304,6 @@
     color: #222235; margin-top: 0.5rem;
   }
 
-  /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(28px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -458,7 +316,6 @@
     .freedom-inner { grid-template-columns: 1fr; }
     .freedom-cards { grid-template-columns: 1fr 1fr; }
     .rules-grid    { grid-template-columns: 1fr; }
-    .social-grid   { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -472,7 +329,10 @@
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
 
-  <div class="hero-tag">⚡ Hackathon Domain Launch 2025 — Domain 03</div>
+  <div class="hero-tag">
+    <i data-lucide="zap" style="width:14px;height:14px"></i>
+    Hackathon Domain Launch 2026 — Domain 01
+  </div>
 
   <h1 class="hero-title">
     <span class="glitch" data-text="WILD">WILD</span><span class="c1">CARD</span><br>
@@ -487,8 +347,6 @@
     this is your arena.</strong> The most dangerous ideas
     don't fit neatly into a category. This domain was built for those ideas.
   </p>
-
-  
 </section>
 
 <!-- ══════════════ STATS ══════════════ -->
@@ -506,7 +364,7 @@
     <div class="stat-label">Your Imagination</div>
   </div>
   <div class="stat">
-    <div class="stat-num">48H</div>
+    <div class="stat-num">96H</div>
     <div class="stat-label">To Change Everything</div>
   </div>
 </div>
@@ -524,35 +382,35 @@
 
     <div class="freedom-cards">
       <div class="fcard">
-        <div class="fcard-icon">🏥</div>
+        <div class="fcard-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">HealthTech</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">🎮</div>
+        <div class="fcard-icon"><i data-lucide="gamepad-2" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Gaming & XR</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">🚀</div>
+        <div class="fcard-icon"><i data-lucide="rocket" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Space Tech</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">⚖️</div>
+        <div class="fcard-icon"><i data-lucide="scale" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Legal Tech</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">🧠</div>
+        <div class="fcard-icon"><i data-lucide="brain" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Mental Health</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">🎨</div>
+        <div class="fcard-icon"><i data-lucide="pen-tool" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Creative Tech</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">🌍</div>
+        <div class="fcard-icon"><i data-lucide="leaf" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Climate Tech</div>
       </div>
       <div class="fcard">
-        <div class="fcard-icon">✨</div>
+        <div class="fcard-icon"><i data-lucide="sparkles" style="width:18px;height:18px"></i></div>
         <div class="fcard-label">Anything Else</div>
       </div>
     </div>
@@ -568,37 +426,37 @@
     <div class="rules-grid">
       <div class="rcard">
         <div class="rcard-num">01</div>
-        <div class="rcard-icon">🎯</div>
+        <div class="rcard-icon"><i data-lucide="crosshair" style="width:18px;height:18px"></i></div>
         <div class="rcard-title">Real Problem</div>
         <div class="rcard-text">Does your idea solve something that genuinely hurts people? The best hacks scratch real itches — not imaginary ones. Ground your idea in truth.</div>
       </div>
       <div class="rcard">
         <div class="rcard-num">02</div>
-        <div class="rcard-icon">⚡</div>
+        <div class="rcard-icon"><i data-lucide="zap" style="width:18px;height:18px"></i></div>
         <div class="rcard-title">Bold Vision</div>
         <div class="rcard-text">Play big or go home. We don't want incremental improvements to existing apps. We want ideas that make judges say "why hasn't this been built yet?"</div>
       </div>
       <div class="rcard">
         <div class="rcard-num">03</div>
-        <div class="rcard-icon">🔨</div>
+        <div class="rcard-icon"><i data-lucide="hammer" style="width:18px;height:18px"></i></div>
         <div class="rcard-title">Working Build</div>
         <div class="rcard-text">A prototype that works — even partially — beats a perfect pitch deck every time. Show us something real. Click it. Demo it. Break it in front of us.</div>
       </div>
       <div class="rcard">
         <div class="rcard-num">04</div>
-        <div class="rcard-icon">📈</div>
+        <div class="rcard-icon"><i data-lucide="trending-up" style="width:18px;height:18px"></i></div>
         <div class="rcard-title">Scale Potential</div>
         <div class="rcard-text">Can this reach 1,000 users? 1 million? Tell us who needs this and how you'd get it to them. Ambition is not arrogance — it's a prerequisite.</div>
       </div>
       <div class="rcard">
         <div class="rcard-num">05</div>
-        <div class="rcard-icon">🌱</div>
+        <div class="rcard-icon"><i data-lucide="sprout" style="width:18px;height:18px"></i></div>
         <div class="rcard-title">Impact Story</div>
         <div class="rcard-text">Who does this help? How does their life change because your product exists? Make us feel the impact — not just understand it intellectually.</div>
       </div>
       <div class="rcard">
         <div class="rcard-num">06</div>
-        <div class="rcard-icon">🤝</div>
+        <div class="rcard-icon"><i data-lucide="users" style="width:18px;height:18px"></i></div>
         <div class="rcard-title">Team Energy</div>
         <div class="rcard-text">The team that built it matters as much as what they built. Passion is contagious. Clarity is rare. Bring both and the judges will remember you.</div>
       </div>
@@ -610,22 +468,11 @@
 <footer>
   <div class="logo">WILDCARD</div>
   <p>Your Idea. Your Domain. Your Rules.</p>
-  <p style="margin-top: 0.8rem;">Open Innovation · Any Domain · Any Problem · Any Solution · 48 Hours</p>
+  <p style="margin-top: 0.8rem;">Open Innovation · Any Domain · Any Problem · Any Solution · 96 Hours</p>
 </footer>
 
 <script>
-  function copyText(id, btn) {
-    const el = document.getElementById(id);
-    const text = el.innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✓ Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'Copy Text';
-        btn.classList.remove('copied');
-      }, 2500);
-    });
-  }
+  lucide.createIcons();
 </script>
 
 </body>

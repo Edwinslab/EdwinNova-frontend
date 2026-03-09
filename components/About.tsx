@@ -8,18 +8,18 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import Image from "next/image";
+import { GraduationCap, TrendingUp } from "lucide-react";
 
 const cards = [
   {
-    icon: "/assets/Students.png",
+    icon: GraduationCap,
     title: "Students Win",
     desc: "Real funding opportunities, hands-on mentorship from active investors, and incubation space for your venture.",
-    accent: "rgba(155,233,49,0.15)",
+    accent: "rgba(155,233,49,0.12)",
     highlight: "#9BE931",
   },
   {
-    icon: "/assets/Investors.png",
+    icon: TrendingUp,
     title: "Investors Win",
     desc: "Curated deal flow from vetted teams. Watch execution firsthand before committing a single rupee.",
     accent: "rgba(155,233,49,0.12)",
@@ -210,9 +210,9 @@ export default function About() {
     damping: 30,
   });
 
-  const bgY         = useTransform(smoothProgress, [0, 1],           [100, -100]);
-  const lineWidth   = useTransform(smoothProgress, [0.1, 0.4],       ["0%", "100%"]);
-  const glowOpacity = useTransform(smoothProgress, [0.2, 0.5, 0.8],  [0.1, 0.4, 0.1]);
+  const bgY         = useTransform(smoothProgress, [0, 1],          [100, -100]);
+  const lineWidth   = useTransform(smoothProgress, [0.1, 0.4],      ["0%", "100%"]);
+  const glowOpacity = useTransform(smoothProgress, [0.2, 0.5, 0.8], [0.1, 0.4, 0.1]);
 
   return (
     <section
@@ -288,7 +288,7 @@ export default function About() {
           <motion.p
             variants={itemVariants}
             className="font-body leading-relaxed mb-4"
-            style={{ color: "rgba(230,237,243,0.6)", fontSize: "0.95rem" }}
+            style={{ color: "rgba(230,237,243,0.75)", fontSize: "0.95rem" }}
           >
             EDWINNOVA is a 4-day startup hackathon that bridges the gap between
             student entrepreneurs and real investors. Unlike traditional
@@ -299,7 +299,7 @@ export default function About() {
           <motion.p
             variants={itemVariants}
             className="font-body leading-relaxed mb-8"
-            style={{ color: "rgba(230,237,243,0.6)", fontSize: "0.95rem" }}
+            style={{ color: "rgba(230,237,243,0.75)", fontSize: "0.95rem" }}
           >
             By selecting top startup ideas and inviting investors to sponsor the
             event in exchange for first access, we create a win-win ecosystem
@@ -330,7 +330,7 @@ export default function About() {
                 <AnimatedNumber value={stat.val} inView={inView} />
                 <div
                   className="font-mono text-[10px] tracking-widest mt-1"
-                  style={{ color: "rgba(230,237,243,0.4)" }}
+                  style={{ color: "rgba(230,237,243,0.55)" }}
                 >
                   {stat.label}
                 </div>
@@ -342,7 +342,6 @@ export default function About() {
         {/* ── Right: Auto-rotating Cards Carousel ── */}
         <div ref={cardsRef} className="flex flex-col items-center gap-6">
 
-          {/* Card carousel — no peek cards, clean edges */}
           <div
             className="relative w-full"
             style={{ minHeight: 280, perspective: 1200 }}
@@ -411,13 +410,13 @@ export default function About() {
                   {/* Card content */}
                   <div className="relative z-10">
 
-                    {/* Icon */}
+                    {/* ── Lucide icon replacing Image ── */}
                     <motion.div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 overflow-hidden"
+                      className="w-14 h-14 rounded-xl flex items-center justify-center mb-6"
                       style={{
                         background: cards[activeCard].accent,
                         border: "1px solid rgba(155,233,49,0.25)",
-                        boxShadow: "0 0 20px rgba(155,233,49,0.1)",
+                        boxShadow: "0 0 20px rgba(155,233,49,0.12)",
                       }}
                       initial={{ rotate: -15, scale: 0.8 }}
                       animate={{ rotate: 0, scale: 1 }}
@@ -428,13 +427,16 @@ export default function About() {
                         delay: 0.1,
                       }}
                     >
-                      <Image
-                        src={cards[activeCard].icon}
-                        alt={cards[activeCard].title}
-                        width={36}
-                        height={36}
-                        className="object-contain"
-                      />
+                      {(() => {
+                        const Icon = cards[activeCard].icon;
+                        return (
+                          <Icon
+                            size={26}
+                            color="#9BE931"
+                            strokeWidth={1.7}
+                          />
+                        );
+                      })()}
                     </motion.div>
 
                     <motion.h3
@@ -448,7 +450,7 @@ export default function About() {
 
                     <motion.p
                       className="font-body text-base md:text-lg leading-relaxed max-w-lg"
-                      style={{ color: "rgba(230,237,243,0.6)" }}
+                      style={{ color: "rgba(230,237,243,0.75)" }}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25, duration: 0.4 }}
@@ -461,7 +463,7 @@ export default function About() {
             </AnimatePresence>
           </div>
 
-          {/* ── Controls: Prev Arrow + Dots + Progress + Next Arrow ── */}
+          {/* ── Controls ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={cardsInView ? { opacity: 1, y: 0 } : {}}
@@ -533,7 +535,7 @@ export default function About() {
             animate={cardsInView ? { opacity: 1 } : {}}
             transition={{ delay: 0.8 }}
             className="font-mono text-[10px] tracking-widest"
-            style={{ color: "rgba(230,237,243,0.25)" }}
+            style={{ color: "rgba(230,237,243,0.3)" }}
           >
             {isPaused ? "PAUSED — HOVER TO BROWSE" : "AUTO-PLAYING"}
           </motion.p>

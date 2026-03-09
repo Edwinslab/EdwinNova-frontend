@@ -46,8 +46,6 @@ export default function Timeline() {
       style={{ background: "#0B0F1A", padding: "112px 5%" }}
     >
       <div className="max-w-5xl mx-auto">
-
-        {/* ── Header ── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -68,127 +66,14 @@ export default function Timeline() {
           </h2>
         </motion.div>
 
-        {/* ─────────────────────────────────────────────────────────
-            MOBILE: horizontal scroll cards
-        ───────────────────────────────────────────────────────── */}
-        <div className="md:hidden -mx-5 px-5">
-          {/* Scroll hint label */}
-          <p
-            className="font-mono text-[9px] tracking-widest mb-4 text-center"
-            style={{ color: "rgba(155,233,49,0.35)" }}
-          >
-            ← SWIPE TO NAVIGATE →
-          </p>
-
-          {/* Horizontal scroll container with snap */}
-          <div
-            className="flex gap-4 overflow-x-auto pb-6"
-            style={{
-              scrollSnapType: "x mandatory",
-              WebkitOverflowScrolling: "touch",
-              scrollbarWidth: "none",        // Firefox
-              msOverflowStyle: "none",       // IE
-            }}
-          >
-            {events.map((ev, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
-                style={{
-                  scrollSnapAlign: "center",
-                  flexShrink: 0,
-                  width: "80vw",
-                  maxWidth: 320,
-                }}
-              >
-                <div
-                  className="h-full rounded-2xl p-6 flex flex-col gap-4"
-                  style={{
-                    background: "rgba(22,28,42,0.8)",
-                    border: "1px solid rgba(155,233,49,0.15)",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
-                    backdropFilter: "blur(12px)",
-                  }}
-                >
-                  {/* Step number */}
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="font-mono text-[9px] tracking-widest px-2 py-1 rounded"
-                      style={{
-                        color: "#9BE931",
-                        background: "rgba(155,233,49,0.08)",
-                        border: "1px solid rgba(155,233,49,0.2)",
-                      }}
-                    >
-                      {ev.day}
-                    </span>
-                    <span
-                      className="font-syne font-extrabold"
-                      style={{
-                        fontSize: "3.5rem",
-                        color: "rgba(155,233,49,0.06)",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-
-                  {/* Green accent line */}
-                  <div
-                    className="w-8 h-[2px] rounded-full"
-                    style={{ background: "#9BE931", boxShadow: "0 0 8px rgba(155,233,49,0.5)" }}
-                  />
-
-                  {/* Title */}
-                  <h3
-                    className="font-syne font-bold text-lg leading-snug"
-                    style={{ color: "#E6EDF3" }}
-                  >
-                    {ev.title}
-                  </h3>
-
-                  {/* Desc */}
-                  <p
-                    className="font-body text-sm leading-relaxed"
-                    style={{ color: "rgba(230,237,243,0.45)" }}
-                  >
-                    {ev.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* Trailing spacer so last card snaps cleanly */}
-            <div style={{ flexShrink: 0, width: "5vw" }} />
-          </div>
-
-          {/* Dot indicators */}
-          <div className="flex justify-center gap-2 mt-2">
-            {events.map((_, i) => (
-              <div
-                key={i}
-                className="rounded-full"
-                style={{
-                  width: 6, height: 6,
-                  background: "rgba(155,233,49,0.25)",
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────
-            DESKTOP: original vertical timeline (unchanged)
-        ───────────────────────────────────────────────────────── */}
-        <div className="relative hidden md:block">
+        {/* Timeline */}
+        <div className="relative">
           {/* Center line */}
           <div
-            className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+            className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 hidden md:block"
             style={{
-              background: "linear-gradient(to bottom, transparent, rgba(155,233,49,0.25), transparent)",
+              background:
+                "linear-gradient(to bottom, transparent, rgba(155,233,49,0.25), transparent)",
             }}
           />
 
@@ -199,11 +84,11 @@ export default function Timeline() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.15 + i * 0.12, duration: 0.6 }}
-                className="relative grid grid-cols-[1fr_60px_1fr] items-start gap-0"
+                className="relative grid md:grid-cols-[1fr_60px_1fr] items-start gap-0"
               >
                 {ev.side === "left" ? (
                   <>
-                    <div className="text-right pr-10">
+                    <div className="md:text-right md:pr-10 pl-8 md:pl-0">
                       <p
                         className="font-mono text-[10px] tracking-widest mb-1.5"
                         style={{ color: "#9BE931" }}
@@ -215,12 +100,12 @@ export default function Timeline() {
                       </h3>
                       <p
                         className="font-body text-sm leading-relaxed"
-                        style={{ color: "rgba(230,237,243,0.45)" }}
+                        style={{ color: "rgba(230,237,243,0.75)" }}
                       >
                         {ev.desc}
                       </p>
                     </div>
-                    <div className="flex justify-center pt-1.5 z-10">
+                    <div className="hidden md:flex justify-center pt-1.5 z-10">
                       <div
                         className="w-3.5 h-3.5 rounded-full border-2 flex-shrink-0"
                         style={{
@@ -230,12 +115,12 @@ export default function Timeline() {
                         }}
                       />
                     </div>
-                    <div />
+                    <div className="hidden md:block" />
                   </>
                 ) : (
                   <>
-                    <div />
-                    <div className="flex justify-center pt-1.5 z-10">
+                    <div className="hidden md:block" />
+                    <div className="hidden md:flex justify-center pt-1.5 z-10">
                       <div
                         className="w-3.5 h-3.5 rounded-full border-2 flex-shrink-0"
                         style={{
@@ -245,7 +130,7 @@ export default function Timeline() {
                         }}
                       />
                     </div>
-                    <div className="pl-10">
+                    <div className="md:pl-10 pl-8">
                       <p
                         className="font-mono text-[10px] tracking-widest mb-1.5"
                         style={{ color: "#9BE931" }}
@@ -257,18 +142,27 @@ export default function Timeline() {
                       </h3>
                       <p
                         className="font-body text-sm leading-relaxed"
-                        style={{ color: "rgba(230,237,243,0.45)" }}
+                        style={{ color: "rgba(230,237,243,0.75)" }}
                       >
                         {ev.desc}
                       </p>
                     </div>
                   </>
                 )}
+
+                {/* Mobile dot */}
+                <div
+                  className="absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 md:hidden"
+                  style={{
+                    borderColor: "#9BE931",
+                    background: "#0B0F1A",
+                    boxShadow: "0 0 10px rgba(155,233,49,0.4)",
+                  }}
+                />
               </motion.div>
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

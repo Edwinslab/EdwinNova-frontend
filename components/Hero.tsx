@@ -73,7 +73,7 @@ export default function Hero() {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);  //if u wnat overlap use a 50%
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);  //if u wnat overlap use a 50%
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
