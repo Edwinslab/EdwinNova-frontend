@@ -192,15 +192,15 @@ export default function ProposalViewer() {
 
               {/* PDF iframe */}
               <iframe
-                src="/proposal-guidelines.pdf#toolbar=0&navpanes=0&scrollbar=0"
-                title="Proposal Guidelines"
-                style={{
-                  flex: 1,
-                  width: "100%",
-                  border: "none",
-                  background: "#1a1f2e",
-                }}
-              />
+  src="/pdfjs/web/viewer.html?file=/proposal-guidelines.pdf"
+  title="Proposal Guidelines"
+  style={{
+    flex: 1,
+    width: "100%",
+    border: "none",
+    background: "#1a1f2e",
+  }}
+/>
             </motion.div>
           </motion.div>
         )}
