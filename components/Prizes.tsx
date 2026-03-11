@@ -58,7 +58,7 @@ export default function Prizes() {
             }}
           >
             Prizes are awarded per innovation domain. Investment opportunities
-            are completely separate and available to all 12 finalists.
+            are completely separate and available to all for the finalists.
           </p>
         </motion.div>
 
@@ -197,7 +197,7 @@ export default function Prizes() {
               className="font-body text-xs mt-3 font-medium"
               style={{ color: "#0B0F1A", opacity: 0.75 }}
             >
-              Across 3 domains · 6 winning teams
+              Across 3 domains
             </p>
           </div>
         </motion.div>

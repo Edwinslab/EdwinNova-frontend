@@ -152,51 +152,11 @@ export default function DomainButtons() {
           <DomainCard key={d.tag} domain={d} index={i} inView={inView} />
         ))}
       </div>
-
-      {/* ── Stats row ── */}
-      <motion.div
-        className="flex flex-wrap justify-center gap-10 mt-16 relative z-10"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: 0.7, duration: 0.6 }}
-      >
-        {[
-          { num: "3", label: "Domains" },
-          { num: "24", label: "Teams Total" },
-          { num: "96h", label: "Build Sprint" },
-        ].map((s) => (
-          <div key={s.label} className="flex flex-col items-center gap-1">
-            <span
-              className="font-syne font-extrabold"
-              style={{ fontSize: "2rem", color: "#9BE931", lineHeight: 1 }}
-            >
-              {s.num}
-            </span>
-            <span
-              className="font-mono text-[10px] tracking-[0.2em] uppercase"
-              style={{ color: "rgba(230,237,243,0.35)" }}
-            >
-              {s.label}
-            </span>
-          </div>
-        ))}
-      </motion.div>
-
-      {/* ── Bottom tag ── */}
-      <motion.p
-        className="font-mono text-[10px] tracking-[0.25em] uppercase mt-10 relative z-10"
-        style={{ color: "rgba(230,237,243,0.2)" }}
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.9 }}
-      >
-        24 spots only — don&apos;t wait
-      </motion.p>
+     
     </section>
   );
 }
 
-/* ─── Individual Domain Card ─────────────────────────────────── */
 function DomainCard({
   domain,
   index,
@@ -236,7 +196,6 @@ function DomainCard({
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        {/* Tooltip */}
         <motion.span
           className="absolute font-mono text-sm font-medium tracking-wide px-4 py-2 rounded-lg pointer-events-none whitespace-nowrap z-20"
           style={{
