@@ -42,15 +42,35 @@ const stages = [
 ];
 
 /* ── Mobile Card Component ── */
-function MobileStageCard({ stage, index }: { stage: typeof stages[0]; index: number }) {
+function MobileStageCard({
+  stage,
+  index,
+  activeIndex,
+}: {
+  stage: typeof stages[0];
+  index: number;
+  activeIndex: number;
+}) {
+  const isActive = index === activeIndex;
+
   return (
     <div
-      className="flex-shrink-0 w-[85vw] snap-center"
-      style={{ scrollSnapAlign: "center" }}
+      className="flex-shrink-0 w-[85vw] snap-center transition-all duration-500"
+      style={{
+        scrollSnapAlign: "center",
+        opacity: isActive ? 1 : 0.5,
+        transform: isActive ? "scale(1)" : "scale(0.96)",
+      }}
     >
       <div
-        className="relative rounded-2xl border border-white/[0.06] overflow-hidden p-6 pb-8"
-        style={{ background: "rgba(22, 28, 42, 0.7)", backdropFilter: "blur(12px)" }}
+        className="relative rounded-2xl overflow-hidden p-6 pb-8 transition-all duration-500"
+        style={{
+          background: "rgba(22, 28, 42, 0.7)",
+          backdropFilter: "blur(12px)",
+          border: isActive
+            ? "1px solid rgba(155,233,49,0.2)"
+            : "1px solid rgba(255,255,255,0.04)",
+        }}
       >
         {/* Background number watermark */}
         <div
@@ -89,27 +109,89 @@ function MobileStageCard({ stage, index }: { stage: typeof stages[0]; index: num
             {stage.desc}
           </p>
         </div>
-
-        {/* Step indicator at bottom */}
-        <div className="relative z-10 mt-6 flex items-center gap-1.5">
-          {stages.map((_, j) => (
-            <div
-              key={j}
-              className="h-[3px] rounded-full transition-all duration-300"
-              style={{
-                width: j === index ? "20px" : "8px",
-                background: j === index ? "#9BE931" : "rgba(155,233,49,0.15)",
-              }}
-            />
-          ))}
-        </div>
       </div>
     </div>
   );
 }
 
-/* ── Mobile Swipeable Section ── */
+/* ── Mobile Swipeable Section with Auto-Scroll ── */
 function MobileStages() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isTouching, setIsTouching] = useState(false);
+  const autoScrollTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const AUTO_SCROLL_INTERVAL = 3000; // scroll every 3 seconds
+  const RESUME_DELAY = 4000; // resume 4s after user stops touching
+
+  /* Scroll to a specific card index */
+  const scrollToCard = (index: number) => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const cardWidth = container.offsetWidth * 0.85; // 85vw
+    const gap = 16; // gap-4 = 1rem = 16px
+    const targetScroll = index * (cardWidth + gap);
+
+    container.scrollTo({ left: targetScroll, behavior: "smooth" });
+    setActiveIndex(index);
+  };
+
+  /* Start auto-scrolling */
+  const startAutoScroll = () => {
+    stopAutoScroll();
+    autoScrollTimer.current = setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = prev >= stages.length - 1 ? 0 : prev + 1;
+        scrollToCard(next);
+        return next;
+      });
+    }, AUTO_SCROLL_INTERVAL);
+  };
+
+  /* Stop auto-scrolling */
+  const stopAutoScroll = () => {
+    if (autoScrollTimer.current) {
+      clearInterval(autoScrollTimer.current);
+      autoScrollTimer.current = null;
+    }
+  };
+
+  /* Pause on touch, resume after delay */
+  const handleTouchStart = () => {
+    setIsTouching(true);
+    stopAutoScroll();
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+  };
+
+  const handleTouchEnd = () => {
+    setIsTouching(false);
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    resumeTimer.current = setTimeout(() => {
+      startAutoScroll();
+    }, RESUME_DELAY);
+  };
+
+  /* Track which card is visible during manual scroll */
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const cardWidth = container.offsetWidth * 0.85 + 16;
+    const newIndex = Math.round(container.scrollLeft / cardWidth);
+    setActiveIndex(Math.min(newIndex, stages.length - 1));
+  };
+
+  /* Initialize auto-scroll on mount */
+  useEffect(() => {
+    startAutoScroll();
+    return () => {
+      stopAutoScroll();
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section
       id="stages-mobile"
@@ -131,37 +213,56 @@ function MobileStages() {
           6 Stages of <span style={{ color: "#9BE931" }}>Innovation</span>
         </h2>
         <p className="font-body text-sm mt-3" style={{ color: "rgba(230,237,243,0.45)" }}>
-          Swipe to explore →
+          {isTouching ? "Release to resume auto-scroll" : "Auto-scrolling · Touch to pause"}
         </p>
       </div>
 
       {/* Horizontally scrollable card strip */}
       <div
-        className="flex gap-4 overflow-x-auto px-6 pb-4"
+        ref={scrollRef}
+        className="mobile-stage-scroll flex gap-4 overflow-x-auto px-6 pb-4"
         style={{
           scrollSnapType: "x mandatory",
           WebkitOverflowScrolling: "touch",
-          /* Hide scrollbar across browsers */
           scrollbarWidth: "none",
           msOverflowStyle: "none",
         }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onMouseEnter={handleTouchStart}
+        onMouseLeave={handleTouchEnd}
+        onScroll={handleScroll}
       >
         <style>{`
-          /* Hide scrollbar for webkit */
           .mobile-stage-scroll::-webkit-scrollbar { display: none; }
         `}</style>
-        <div
-          className="flex gap-4 mobile-stage-scroll"
-          style={{
-            /* Re-apply overflow here so the CSS class targets the right element */
-          }}
-        >
-          {stages.map((s, i) => (
-            <MobileStageCard key={i} stage={s} index={i} />
-          ))}
-          {/* Right padding spacer so last card can snap to center */}
-          <div className="flex-shrink-0 w-[7.5vw]" />
-        </div>
+        {stages.map((s, i) => (
+          <MobileStageCard key={i} stage={s} index={i} activeIndex={activeIndex} />
+        ))}
+        {/* Right padding spacer so last card can snap to center */}
+        <div className="flex-shrink-0 w-[7.5vw]" />
+      </div>
+
+      {/* Dot indicators (tappable) */}
+      <div className="flex justify-center gap-2 mt-6 px-6">
+        {stages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              scrollToCard(i);
+              stopAutoScroll();
+              if (resumeTimer.current) clearTimeout(resumeTimer.current);
+              resumeTimer.current = setTimeout(() => startAutoScroll(), RESUME_DELAY);
+            }}
+            className="transition-all duration-300 rounded-full"
+            style={{
+              width: i === activeIndex ? "24px" : "8px",
+              height: "8px",
+              background: i === activeIndex ? "#9BE931" : "rgba(155,233,49,0.2)",
+            }}
+            aria-label={`Go to stage ${i + 1}`}
+          />
+        ))}
       </div>
     </section>
   );
