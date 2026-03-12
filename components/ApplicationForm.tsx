@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   Plus, Trash2, Github, Mail, Phone,
-  User, Briefcase, Upload, ChevronDown, Globe
+  User, Briefcase, Upload, ChevronDown, Globe, ArrowLeft
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface Teammate {
   name: string;
@@ -39,9 +40,9 @@ const isValidUrl = (v: string) => {
 };
 
 const DOMAINS = [
-  "Wildcard",
-  "Root Code",
-  "TideHack"
+  "Wildcard (Open Theme) ",
+  "Root Code (AgriTech) ",
+  "TideHack (Costal or Fishing)"
 ];
 
 const EMPTY_TEAMMATE: Teammate = {
@@ -60,6 +61,56 @@ const inputBase: React.CSSProperties = {
   outline: "none",
   transition: "border-color 0.25s, box-shadow 0.25s",
 };
+
+
+function BackToHome() {
+  return (
+    <motion.div
+      style={{ position: "fixed", top: 28, left: 28, zIndex: 50 }}
+      initial={{ opacity: 0, x: -12 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+    >
+      <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+        <motion.div
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: "50%",
+            background: "rgba(155,233,49,0.06)",
+            border: "1px solid rgba(155,233,49,0.15)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            transition: "background 0.25s, border-color 0.25s, box-shadow 0.25s",
+          }}
+          whileHover={{
+            background: "rgba(155,233,49,0.15)",
+            borderColor: "rgba(155,233,49,0.4)",
+            boxShadow: "0 0 16px rgba(155,233,49,0.12)",
+            x: -2,
+          }}
+          whileTap={{ scale: 0.92 }}
+        >
+          <ArrowLeft size={16} style={{ color: "#9BE931" }} />
+        </motion.div>
+        <span
+          style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: 11,
+            letterSpacing: "0.25em",
+            textTransform: "uppercase" as const,
+            color: "rgba(155,233,49,0.35)",
+            transition: "color 0.25s",
+          }}
+        >
+          Home
+        </span>
+      </Link>
+    </motion.div>
+  );
+}
 
 
 function Field({
@@ -634,6 +685,9 @@ if (submitted) return (
       overflow: "hidden",
     }}
   >
+    {/* Back to Home */}
+    <BackToHome />
+
     {/* Background radial glow */}
     <div
       style={{
@@ -842,6 +896,9 @@ if (submitted) return (
 
   return (
     <div style={{ minHeight: "100vh", background: "#0B0F1A", padding: "110px 5% 90px", position: "relative" }}>
+
+      {/* Back to Home */}
+      <BackToHome />
 
       {/* Background grid */}
       <div style={{
