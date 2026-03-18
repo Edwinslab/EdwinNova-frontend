@@ -32,8 +32,14 @@ interface FormState {
 const isValidEmail = (v: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
-const isValidPhone = (v: string) =>
-  /^[+]?[\d\s\-().]{7,15}$/.test(v.trim());
+// Stronger phone validation:
+// - strips spaces, dashes, dots, parentheses
+// - optional leading +
+// - must be 10–15 digits only (no letters, no special chars)
+const isValidPhone = (v: string) => {
+  const cleaned = v.trim().replace(/[\s\-().]/g, "");
+  return /^\+?\d{10,15}$/.test(cleaned);
+};
 
 const isValidUrl = (v: string) => {
   try { new URL(v.trim()); return true; } catch { return false; }
@@ -530,7 +536,48 @@ export default function ApplyForm() {
       return false;
     }
 
-    // Duplicate teammate emails
+    // Team members — at least 1 member with name + email is required
+    // Additional members are optional, but if added (name or email filled), both must be valid
+
+    // First member is always required
+    const firstMember = form.teammates[0];
+    if (!firstMember.name.trim()) {
+      toast.error("Member 1: Name is required.");
+      return false;
+    }
+    if (!firstMember.email.trim()) {
+      toast.error("Member 1: Email is required.");
+      return false;
+    }
+    if (!isValidEmail(firstMember.email)) {
+      toast.error("Member 1: Email is not valid.");
+      return false;
+    }
+
+    // For members 2–4: only validate if name or email is filled (partial fill = error)
+    for (let i = 1; i < form.teammates.length; i++) {
+      const m = form.teammates[i];
+      const hasName = m.name.trim() !== "";
+      const hasEmail = m.email.trim() !== "";
+
+      // If either field is filled, both must be filled and valid
+      if (hasName || hasEmail) {
+        if (!hasName) {
+          toast.error(`Member ${i + 1}: Name is required if email is provided.`);
+          return false;
+        }
+        if (!hasEmail) {
+          toast.error(`${m.name.trim()}: Email is required if name is provided.`);
+          return false;
+        }
+        if (!isValidEmail(m.email)) {
+          toast.error(`${m.name.trim()}: Email is not valid.`);
+          return false;
+        }
+      }
+    }
+
+    // Duplicate teammate emails (only among filled ones)
     const emails = form.teammates
       .map((m) => m.email.trim().toLowerCase())
       .filter(Boolean);
@@ -539,58 +586,17 @@ export default function ApplyForm() {
       return false;
     }
 
-    // Team members
-    for (let i = 0; i < form.teammates.length; i++) {
-      const m = form.teammates[i];
-      const label = m.name.trim() || `Member ${i + 1}`;
+    // COMMENTED OUT: Role validation
+    // if (!m.role) {
+    //   toast.error(`${label}: Please select a role.`);
+    //   return false;
+    // }
 
-      if (!m.name.trim()) {
-        toast.error(`Member ${i + 1}: Name is required.`);
-        return false;
-      }
-      if (!m.email.trim()) {
-        toast.error(`${label}: Email is required.`);
-        return false;
-      }
-      if (!isValidEmail(m.email)) {
-        toast.error(`${label}: Email is not valid.`);
-        return false;
-      }
-      if (!m.role) {
-        toast.error(`${label}: Please select a role.`);
-        return false;
-      }
-
-      // Resume required for ALL members
-      if (!m.resume) {
-        toast.error(`${label}: Resume PDF is required.`);
-        return false;
-      }
-
-      // Developer: GitHub required
-      if (m.role === "Developer") {
-        if (!m.github.trim()) {
-          toast.error(`${label}: GitHub profile URL is required.`);
-          return false;
-        }
-        if (!m.github.trim().startsWith("https://github.com/")) {
-          toast.error(`${label}: GitHub URL must start with https://github.com/`);
-          return false;
-        }
-      }
-
-      // Designer: Portfolio required
-      if (m.role === "Designer") {
-        if (!m.portfolio.trim()) {
-          toast.error(`${label}: Portfolio URL is required.`);
-          return false;
-        }
-        if (!isValidUrl(m.portfolio)) {
-          toast.error(`${label}: Portfolio URL is not valid.`);
-          return false;
-        }
-      }
-    }
+    // COMMENTED OUT: Resume required for ALL members
+    // if (!m.resume) {
+    //   toast.error(`${label}: Resume PDF is required.`);
+    //   return false;
+    // }
 
     return true;
   };
@@ -616,9 +622,6 @@ export default function ApplyForm() {
         teammates: form.teammates.map(({ resume: _, ...t }) => ({
           name: t.name.trim(),
           email: t.email.trim(),
-          role: t.role,
-          github: t.github.trim(),
-          portfolio: t.portfolio.trim(),
         })),
       }));
 
@@ -1061,14 +1064,14 @@ if (submitted) return (
                       type="email"
                     />
 
-                    {/* Role dropdown */}
-                    <RoleSelect
+                    {/* COMMENTED OUT: Role dropdown */}
+                    {/* <RoleSelect
                       value={member.role}
                       onChange={(v) => updateTeammate(idx, "role", v)}
-                    />
+                    /> */}
 
                     {/* Role-conditional: GitHub for Dev, Portfolio for Designer */}
-                    <div>
+                    {/* <div>
                       {member.role === "Developer" && (
                         <Field
                           icon={<Github size={15} />}
@@ -1102,10 +1105,10 @@ if (submitted) return (
                           </span>
                         </div>
                       )}
-                    </div>
+                    </div> */}
 
-                    {/* Resume — always visible for ALL members */}
-                    <div style={{ gridColumn: "1 / -1" }}>
+                    {/* COMMENTED OUT: Resume upload — for ALL members */}
+                    {/* <div style={{ gridColumn: "1 / -1" }}>
                       <p style={{
                         fontFamily: "'Space Mono',monospace", fontSize: 10,
                         color: "rgba(155,233,49,0.5)", letterSpacing: "0.12em", marginBottom: 8,
@@ -1116,7 +1119,7 @@ if (submitted) return (
                         file={member.resume}
                         onFile={(f) => updateTeammate(idx, "resume", f)}
                       />
-                    </div>
+                    </div> */}
 
                   </div>
                 </GlassCard>
