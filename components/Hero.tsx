@@ -7,7 +7,7 @@ function Countdown() {
   const [time, setTime] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   useEffect(() => {
-    const target = new Date("2026-04-03T09:00:00");
+    const target = new Date("2026-04-03T00:00:00");
     const tick = () => {
       const diff = target.getTime() - Date.now();
       if (diff <= 0) return;
