@@ -1209,7 +1209,7 @@ if (submitted) return (
               textAlign: "center", fontFamily: "'Space Mono',monospace",
               fontSize: 10, color: "rgba(230,237,243,0.18)", marginTop: 14, letterSpacing: "0.15em",
             }}>
-              // APPLICATIONS CLOSE MARCH 15, 2026
+          
             </p>
           </div>
 
