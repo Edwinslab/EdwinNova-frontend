@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   Plus, Trash2, Github, Mail, Phone,
-  User, Briefcase, Upload, ChevronDown, Globe, ArrowLeft
+  User, Briefcase, Upload, ChevronDown, Globe, ArrowLeft, Lock
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -32,10 +32,6 @@ interface FormState {
 const isValidEmail = (v: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
-// Stronger phone validation:
-// - strips spaces, dashes, dots, parentheses
-// - optional leading +
-// - must be 10–15 digits only (no letters, no special chars)
 const isValidPhone = (v: string) => {
   const cleaned = v.trim().replace(/[\s\-().]/g, "");
   return /^\+?\d{10,15}$/.test(cleaned);
@@ -441,6 +437,240 @@ function RoleBadge({ role }: { role: "Developer" | "Designer" | "" }) {
   );
 }
 
+// ── Applications Closed Screen ──────────────────────────────────────────────
+function ApplicationsClosed() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 40,
+        background: "#0B0F1A",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <BackToHome />
+
+      {/* Animated radial pulse */}
+      {[1, 2, 3].map((i) => (
+        <motion.div
+          key={i}
+          style={{
+            position: "absolute",
+            width: 400 * i,
+            height: 400 * i,
+            borderRadius: "50%",
+            border: "1px solid rgba(255,80,80,0.06)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "none",
+          }}
+          animate={{ scale: [1, 1.04, 1], opacity: [0.4, 0.15, 0.4] }}
+          transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+        />
+      ))}
+
+      {/* Dim red glow behind center */}
+      <div style={{
+        position: "absolute",
+        width: 500,
+        height: 500,
+        borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(220,50,50,0.07) 0%, transparent 65%)",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        pointerEvents: "none",
+      }} />
+
+      {/* Background grid */}
+      <div style={{
+        position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
+        backgroundImage: "linear-gradient(rgba(255,80,80,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,80,80,0.02) 1px, transparent 1px)",
+        backgroundSize: "64px 64px",
+      }} />
+
+      {/* Content */}
+      <div style={{
+        position: "relative",
+        zIndex: 10,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        maxWidth: 560,
+      }}>
+
+        {/* Lock icon */}
+        <motion.div
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            background: "rgba(220,50,50,0.07)",
+            border: "1px solid rgba(220,50,50,0.2)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 40,
+          }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5, type: "spring", stiffness: 180 }}
+        >
+          <motion.div
+            animate={{ rotate: [0, -8, 8, -4, 4, 0] }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
+            <Lock size={32} style={{ color: "rgba(220,100,100,0.8)" }} />
+          </motion.div>
+        </motion.div>
+
+        {/* Status pill */}
+        <motion.div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 32,
+            padding: "6px 18px",
+            borderRadius: 100,
+            background: "rgba(220,50,50,0.07)",
+            border: "1px solid rgba(220,50,50,0.18)",
+          }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <motion.div
+            style={{ width: 7, height: 7, borderRadius: "50%", background: "rgba(220,100,100,0.9)" }}
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity }}
+          />
+          <span style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: 11,
+            letterSpacing: "0.25em",
+            color: "rgba(220,100,100,0.8)",
+            textTransform: "uppercase",
+          }}>
+            STATUS: CLOSED
+          </span>
+        </motion.div>
+
+        {/* Headline */}
+        <div style={{ overflow: "hidden", marginBottom: 6 }}>
+          <motion.h1
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(2.8rem, 9vw, 6rem)",
+              color: "#E6EDF3",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+              margin: 0,
+            }}
+            initial={{ y: "110%" }}
+            animate={{ y: "0%" }}
+            transition={{ delay: 0.5, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          >
+            APPLICATIONS
+          </motion.h1>
+        </div>
+        <div style={{ overflow: "hidden", marginBottom: 48 }}>
+          <motion.h1
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(2.8rem, 9vw, 6rem)",
+              color: "rgba(220,100,100,0.85)",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+              margin: 0,
+              textShadow: "0 0 60px rgba(220,50,50,0.2)",
+            }}
+            initial={{ y: "110%" }}
+            animate={{ y: "0%" }}
+            transition={{ delay: 0.65, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          >
+            ARE CLOSED.
+          </motion.h1>
+        </div>
+
+        {/* Divider */}
+        <motion.div
+          style={{
+            width: 56,
+            height: 2,
+            background: "rgba(220,100,100,0.25)",
+            borderRadius: 1,
+            marginBottom: 32,
+          }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1.0, duration: 0.5 }}
+        />
+
+        {/* Body */}
+        <motion.p
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            color: "rgba(230,237,243,0.4)",
+            fontSize: 16,
+            lineHeight: 1.8,
+            margin: 0,
+            marginBottom: 16,
+          }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+        >
+          We&apos;re no longer accepting new applications for{" "}
+          <span style={{ color: "rgba(230,237,243,0.65)", fontWeight: 600 }}>EDWINNOVA 2026</span>.
+          The submission window has ended.
+        </motion.p>
+
+        <motion.p
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            color: "rgba(230,237,243,0.28)",
+            fontSize: 14,
+            lineHeight: 1.75,
+            margin: 0,
+          }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.25, duration: 0.6 }}
+        >
+          If you already submitted, sit tight — the selection committee will
+          be reaching out to shortlisted teams soon.
+        </motion.p>
+
+        {/* Footer tag */}
+        <motion.span
+          style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: 10,
+            color: "rgba(220,100,100,0.25)",
+            letterSpacing: "0.3em",
+            marginTop: 52,
+            display: "block",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 0.6 }}
+        >
+          // EDWINNOVA 2026 · ALVAS INSTITUTE, MANGALURU
+        </motion.span>
+      </div>
+    </div>
+  );
+}
+
 export default function ApplyForm() {
   const [form, setForm] = useState<FormState>({
     team_name: "",
@@ -454,6 +684,7 @@ export default function ApplyForm() {
   const [proposal, setProposal] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [applicationsClosed, setApplicationsClosed] = useState(false);
 
 
   const updateField = (field: keyof FormState, value: string) =>
@@ -494,13 +725,11 @@ export default function ApplyForm() {
 
   const validate = (): boolean => {
 
-    // Proposal
     if (!proposal) {
       toast.error("Project proposal PDF is required.");
       return false;
     }
 
-    // Team info
     if (!form.team_name.trim()) {
       toast.error("Team name is required.");
       return false;
@@ -510,7 +739,6 @@ export default function ApplyForm() {
       return false;
     }
 
-    // Project manager
     if (!form.pm_name.trim()) {
       toast.error("Project Manager name is required.");
       return false;
@@ -536,10 +764,6 @@ export default function ApplyForm() {
       return false;
     }
 
-    // Team members — at least 1 member with name + email is required
-    // Additional members are optional, but if added (name or email filled), both must be valid
-
-    // First member is always required
     const firstMember = form.teammates[0];
     if (!firstMember.name.trim()) {
       toast.error("Member 1: Name is required.");
@@ -554,13 +778,11 @@ export default function ApplyForm() {
       return false;
     }
 
-    // For members 2–4: only validate if name or email is filled (partial fill = error)
     for (let i = 1; i < form.teammates.length; i++) {
       const m = form.teammates[i];
       const hasName = m.name.trim() !== "";
       const hasEmail = m.email.trim() !== "";
 
-      // If either field is filled, both must be filled and valid
       if (hasName || hasEmail) {
         if (!hasName) {
           toast.error(`Member ${i + 1}: Name is required if email is provided.`);
@@ -577,7 +799,6 @@ export default function ApplyForm() {
       }
     }
 
-    // Duplicate teammate emails (only among filled ones)
     const emails = form.teammates
       .map((m) => m.email.trim().toLowerCase())
       .filter(Boolean);
@@ -585,18 +806,6 @@ export default function ApplyForm() {
       toast.error("Duplicate teammate emails are not allowed.");
       return false;
     }
-
-    // COMMENTED OUT: Role validation
-    // if (!m.role) {
-    //   toast.error(`${label}: Please select a role.`);
-    //   return false;
-    // }
-
-    // COMMENTED OUT: Resume required for ALL members
-    // if (!m.resume) {
-    //   toast.error(`${label}: Resume PDF is required.`);
-    //   return false;
-    // }
 
     return true;
   };
@@ -640,18 +849,28 @@ export default function ApplyForm() {
 
       clearTimeout(timeout);
 
-      //lorem
-
       let data: any = null;
       try { data = await response.json(); } catch { data = null; }
 
+      // ── Detect "applications closed" response from backend ──
+      const msg: string = data?.message ?? "";
+      const isClosed =
+        msg.toLowerCase().includes("closed") ||
+        msg.toLowerCase().includes("no longer");
+
+      if (isClosed) {
+        toast.dismiss(loadingToast);
+        setApplicationsClosed(true);
+        return;
+      }
+
       if (!response.ok) {
-        const serverMsg = data?.error || data?.message || "Submission failed. Please try again.";
+        const serverMsg = data?.error || msg || "Submission failed. Please try again.";
         toast.error(serverMsg, { id: loadingToast });
         return;
       }
 
-      const successMsg = data?.message || "Application submitted successfully!";
+      const successMsg = msg || "Application submitted successfully!";
       toast.success(successMsg, { id: loadingToast });
 
       setForm({
@@ -674,243 +893,218 @@ export default function ApplyForm() {
   };
 
 
+  // ── Render: Applications Closed ──
+  if (applicationsClosed) return <ApplicationsClosed />;
 
-if (submitted) return (
-  <div
-    style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 40,
-      background: "#0B0F1A",
-      position: "relative",
-      overflow: "hidden",
-    }}
-  >
-    {/* Back to Home */}
-    <BackToHome />
 
-    {/* Background radial glow */}
+  // ── Render: Success ──
+  if (submitted) return (
     <div
       style={{
-        position: "absolute",
-        width: 700,
-        height: 700,
-        borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(155,233,49,0.06) 0%, transparent 60%)",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        pointerEvents: "none",
-      }}
-    />
-
-    {/* Horizontal wipe line */}
-    <motion.div
-      style={{
-        position: "absolute",
-        height: 1,
-        top: "50%",
-        left: 0,
-        right: 0,
-        background: "linear-gradient(90deg, transparent, rgba(155,233,49,0.2) 30%, rgba(155,233,49,0.2) 70%, transparent)",
-        transformOrigin: "center",
-      }}
-      initial={{ scaleX: 0, opacity: 0 }}
-      animate={{ scaleX: 1, opacity: 1 }}
-      transition={{ delay: 0.1, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-    />
-
-    {/* Content */}
-    <div
-      style={{
-        position: "relative",
-        zIndex: 10,
+        minHeight: "100vh",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        textAlign: "center",
+        justifyContent: "center",
+        padding: 40,
+        background: "#0B0F1A",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Status indicator */}
+      <BackToHome />
+
+      <div
+        style={{
+          position: "absolute",
+          width: 700,
+          height: 700,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(155,233,49,0.06) 0%, transparent 60%)",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+        }}
+      />
+
       <motion.div
-        style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.5 }}
+        style={{
+          position: "absolute",
+          height: 1,
+          top: "50%",
+          left: 0,
+          right: 0,
+          background: "linear-gradient(90deg, transparent, rgba(155,233,49,0.2) 30%, rgba(155,233,49,0.2) 70%, transparent)",
+          transformOrigin: "center",
+        }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+      />
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+        }}
       >
         <motion.div
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            background: "#9BE931",
-          }}
-          animate={{
-            boxShadow: [
-              "0 0 0px rgba(155,233,49,0.4)",
-              "0 0 16px rgba(155,233,49,0.6)",
-              "0 0 0px rgba(155,233,49,0.4)",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <span
-          style={{
+          style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <motion.div
+            style={{ width: 8, height: 8, borderRadius: "50%", background: "#9BE931" }}
+            animate={{
+              boxShadow: [
+                "0 0 0px rgba(155,233,49,0.4)",
+                "0 0 16px rgba(155,233,49,0.6)",
+                "0 0 0px rgba(155,233,49,0.4)",
+              ],
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <span style={{
             fontFamily: "'Space Mono', monospace",
             fontSize: 12,
             letterSpacing: "0.3em",
             color: "#9BE931",
             textTransform: "uppercase",
-          }}
-        >
-          STATUS: RECEIVED
-        </span>
-      </motion.div>
+          }}>
+            STATUS: RECEIVED
+          </span>
+        </motion.div>
 
-      {/* Line 1 */}
-      <div style={{ overflow: "hidden" }}>
-        <motion.h1
+        <div style={{ overflow: "hidden" }}>
+          <motion.h1
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(3rem, 10vw, 7rem)",
+              color: "#E6EDF3",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+              margin: 0,
+            }}
+            initial={{ y: "110%" }}
+            animate={{ y: "0%" }}
+            transition={{ delay: 0.5, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          >
+            YOU&apos;RE
+          </motion.h1>
+        </div>
+
+        <div style={{ overflow: "hidden" }}>
+          <motion.h1
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(3rem, 10vw, 7rem)",
+              color: "#9BE931",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+              margin: 0,
+              textShadow: "0 0 60px rgba(155,233,49,0.25)",
+            }}
+            initial={{ y: "110%" }}
+            animate={{ y: "0%" }}
+            transition={{ delay: 0.65, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          >
+            IN.
+          </motion.h1>
+        </div>
+
+        <motion.div
           style={{
-            fontFamily: "'Syne', sans-serif",
-            fontWeight: 800,
-            fontSize: "clamp(3rem, 10vw, 7rem)",
-            color: "#E6EDF3",
-            letterSpacing: "-0.03em",
-            lineHeight: 1,
-            margin: 0,
+            width: 64, height: 2,
+            background: "rgba(155,233,49,0.3)",
+            borderRadius: 1, marginTop: 48, marginBottom: 32,
           }}
-          initial={{ y: "110%" }}
-          animate={{ y: "0%" }}
-          transition={{ delay: 0.5, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-        >
-          YOU&apos;RE
-        </motion.h1>
-      </div>
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1, duration: 0.5 }}
+        />
 
-      {/* Line 2 */}
-      <div style={{ overflow: "hidden" }}>
-        <motion.h1
+        <motion.p
           style={{
-            fontFamily: "'Syne', sans-serif",
-            fontWeight: 800,
-            fontSize: "clamp(3rem, 10vw, 7rem)",
-            color: "#9BE931",
-            letterSpacing: "-0.03em",
-            lineHeight: 1,
-            margin: 0,
-            textShadow: "0 0 60px rgba(155,233,49,0.25)",
+            fontFamily: "'DM Sans', sans-serif",
+            color: "rgba(230,237,243,0.4)",
+            fontSize: 16, maxWidth: 460, lineHeight: 1.75, margin: 0,
           }}
-          initial={{ y: "110%" }}
-          animate={{ y: "0%" }}
-          transition={{ delay: 0.65, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
         >
-          IN.
-        </motion.h1>
+          We&apos;ve received your application. The selection committee will
+          review your submission and reach out with next steps.
+        </motion.p>
+
+        <motion.span
+          style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: 10,
+            color: "rgba(155,233,49,0.3)",
+            letterSpacing: "0.3em",
+            marginTop: 40,
+            display: "block",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
+        >
+          // EDWINNOVA 2026
+        </motion.span>
+
+        <motion.button
+          type="button"
+          onClick={() => setSubmitted(false)}
+          style={{
+            marginTop: 48, padding: "14px 36px",
+            background: "transparent",
+            border: "1px solid rgba(155,233,49,0.2)",
+            borderRadius: 8,
+            fontFamily: "'Space Mono', monospace",
+            fontSize: 11, letterSpacing: "0.2em",
+            color: "rgba(155,233,49,0.5)",
+            cursor: "pointer", transition: "all 0.25s",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.7, duration: 0.5 }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.borderColor = "rgba(155,233,49,0.5)";
+            el.style.color = "#9BE931";
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.borderColor = "rgba(155,233,49,0.2)";
+            el.style.color = "rgba(155,233,49,0.5)";
+          }}
+        >
+          ← BACK
+        </motion.button>
       </div>
-
-      {/* Divider */}
-      <motion.div
-        style={{
-          width: 64,
-          height: 2,
-          background: "rgba(155,233,49,0.3)",
-          borderRadius: 1,
-          marginTop: 48,
-          marginBottom: 32,
-        }}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
-      />
-
-      {/* Body text */}
-      <motion.p
-        style={{
-          fontFamily: "'DM Sans', sans-serif",
-          color: "rgba(230,237,243,0.4)",
-          fontSize: 16,
-          maxWidth: 460,
-          lineHeight: 1.75,
-          margin: 0,
-        }}
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1, duration: 0.6 }}
-      >
-        We&apos;ve received your application. The selection committee will
-        review your submission and reach out with next steps.
-      </motion.p>
-
-      {/* Tagline */}
-      <motion.span
-        style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: 10,
-          color: "rgba(155,233,49,0.3)",
-          letterSpacing: "0.3em",
-          marginTop: 40,
-          display: "block",
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-      >
-        // EDWINNOVA 2026
-      </motion.span>
-
-      <motion.button
-  type="button"
-  onClick={() => setSubmitted(false)}
-  style={{
-    marginTop: 48,
-    padding: "14px 36px",
-    background: "transparent",
-    border: "1px solid rgba(155,233,49,0.2)",
-    borderRadius: 8,
-    fontFamily: "'Space Mono', monospace",
-    fontSize: 11,
-    letterSpacing: "0.2em",
-    color: "rgba(155,233,49,0.5)",
-    cursor: "pointer",
-    transition: "all 0.25s",
-  }}
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ delay: 1.7, duration: 0.5 }}
-  onMouseEnter={(e) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.borderColor = "rgba(155,233,49,0.5)";
-    el.style.color = "#9BE931";
-  }}
-  onMouseLeave={(e) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.borderColor = "rgba(155,233,49,0.2)";
-    el.style.color = "rgba(155,233,49,0.5)";
-  }}
->
-  ← BACK
-</motion.button>
     </div>
-  </div>
-);
+  );
 
 
   return (
     <div style={{ minHeight: "100vh", background: "#0B0F1A", padding: "110px 5% 90px", position: "relative" }}>
 
-      {/* Back to Home */}
       <BackToHome />
 
-      {/* Background grid */}
       <div style={{
         position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
         backgroundImage: "linear-gradient(rgba(155,233,49,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(155,233,49,0.03) 1px, transparent 1px)",
         backgroundSize: "64px 64px",
       }} />
 
-      {/* Background glow */}
       <div style={{
         position: "fixed", top: "30%", left: "50%", transform: "translateX(-50%)",
         width: 700, height: 700, borderRadius: "50%", pointerEvents: "none", zIndex: 0,
@@ -919,7 +1113,6 @@ if (submitted) return (
 
       <div style={{ maxWidth: 760, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
-        {/* ── Header ── */}
         <div style={{ textAlign: "center", marginBottom: 64 }}>
           <p style={{
             fontFamily: "'Space Mono',monospace", fontSize: 10, color: "#9BE931",
@@ -1010,7 +1203,6 @@ if (submitted) return (
               {form.teammates.map((member, idx) => (
                 <GlassCard key={idx}>
 
-                  {/* Member header */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <div style={{
@@ -1047,9 +1239,7 @@ if (submitted) return (
                     )}
                   </div>
 
-                  {/* Member fields */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-
                     <Field
                       icon={<User size={15} />}
                       placeholder="Full Name"
@@ -1063,69 +1253,10 @@ if (submitted) return (
                       onChange={(v) => updateTeammate(idx, "email", v)}
                       type="email"
                     />
-
-                    {/* COMMENTED OUT: Role dropdown */}
-                    {/* <RoleSelect
-                      value={member.role}
-                      onChange={(v) => updateTeammate(idx, "role", v)}
-                    /> */}
-
-                    {/* Role-conditional: GitHub for Dev, Portfolio for Designer */}
-                    {/* <div>
-                      {member.role === "Developer" && (
-                        <Field
-                          icon={<Github size={15} />}
-                          placeholder="https://github.com/username"
-                          value={member.github}
-                          onChange={(v) => updateTeammate(idx, "github", v)}
-                          type="url"
-                        />
-                      )}
-                      {member.role === "Designer" && (
-                        <Field
-                          icon={<Globe size={15} />}
-                          placeholder="Portfolio URL (Dribbble, Behance...)"
-                          value={member.portfolio}
-                          onChange={(v) => updateTeammate(idx, "portfolio", v)}
-                          type="url"
-                        />
-                      )}
-                      {!member.role && (
-                        <div style={{
-                          height: "100%", minHeight: 46,
-                          border: "1px dashed rgba(155,233,49,0.1)",
-                          borderRadius: 10,
-                          display: "flex", alignItems: "center", padding: "0 16px",
-                        }}>
-                          <span style={{
-                            fontFamily: "'Space Mono',monospace", fontSize: 11,
-                            color: "rgba(230,237,243,0.18)", letterSpacing: "0.05em",
-                          }}>
-                            // Select role first
-                          </span>
-                        </div>
-                      )}
-                    </div> */}
-
-                    {/* COMMENTED OUT: Resume upload — for ALL members */}
-                    {/* <div style={{ gridColumn: "1 / -1" }}>
-                      <p style={{
-                        fontFamily: "'Space Mono',monospace", fontSize: 10,
-                        color: "rgba(155,233,49,0.5)", letterSpacing: "0.12em", marginBottom: 8,
-                      }}>
-                        // RESUME REQUIRED FOR ALL MEMBERS
-                      </p>
-                      <ResumeZone
-                        file={member.resume}
-                        onFile={(f) => updateTeammate(idx, "resume", f)}
-                      />
-                    </div> */}
-
                   </div>
                 </GlassCard>
               ))}
 
-              {/* Add member */}
               {form.teammates.length < 4 && (
                 <button
                   type="button"
@@ -1205,12 +1336,6 @@ if (submitted) return (
             >
               {loading ? "SUBMITTING..." : "SUBMIT APPLICATION →"}
             </button>
-            <p style={{
-              textAlign: "center", fontFamily: "'Space Mono',monospace",
-              fontSize: 10, color: "rgba(230,237,243,0.18)", marginTop: 14, letterSpacing: "0.15em",
-            }}>
-          
-            </p>
           </div>
 
         </form>
